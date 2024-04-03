@@ -1,5 +1,13 @@
 # React + TypeScript + Vite
 
+Please note to install the dependencies run the command :
+
+```js
+
+npm install --legacy-peer-deps
+
+```
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
