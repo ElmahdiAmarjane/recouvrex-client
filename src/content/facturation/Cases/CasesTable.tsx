@@ -30,6 +30,7 @@ import { CryptoOrder, CryptoOrderStatus } from "src/models/crypto_order";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import BulkActions from "./BulkActions";
+import CasesSearch from "./CasesSearch";
 
 interface CasesTableProps {
   className?: string;
@@ -182,6 +183,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
         </Box>
       )}
       {!selectedBulkActions && (
+         <>
         <CardHeader
           action={
             <Box width={150}>
@@ -204,6 +206,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
           }
           title="Recouvrements"
         />
+        <CasesSearch/>
+       </>
       )}
       <Divider />
       <TableContainer>
@@ -264,9 +268,9 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                     >
                       {cryptoOrder.orderDetails}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
+                    {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, "MMMM dd yyyy")}
-                    </Typography>
+                    </Typography> */}
                   </TableCell>
                   {/* the colomn 3 */}
                   <TableCell>
@@ -293,13 +297,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       noWrap
                     >
                       {cryptoOrder.amountCrypto}
-                      {cryptoOrder.cryptoCurrency}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
+                    {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {numeral(cryptoOrder.amount).format(
                         `${cryptoOrder.currency}0,0.00`
                       )}
-                    </Typography>
+                    </Typography> */}
                   </TableCell>
                   {/* deplicated from the above */}
                   <TableCell>
@@ -361,7 +364,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       {cryptoOrder.amountCrypto}
                     </Typography>
                   </TableCell>
-                  
+
                   {/* deplicated from the above */}
                   <TableCell>
                     <Typography
