@@ -30,22 +30,22 @@ function PageHeader() {
        {/* <Grid item>
        <InforCardWorning/>
       </Grid> */}
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning  value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3}  sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
       {/* the secend row */}
@@ -55,10 +55,10 @@ function PageHeader() {
       <Grid lg={4} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
-      <Grid lg={2} sm={6} xs={12}>
+      <Grid lg={2} md={3} sm={6} xs={12}>
         <InforCardWorning value="$15k" />
       </Grid>
     </Grid>

@@ -12,13 +12,16 @@ export default function CasesSearch() {
       width: 800,
       maxWidth: '100%',
       m: 1,
+      pt:0,
+      mt: 0,
     }}
   >
     <TextField 
       fullWidth 
       placeholder='Tapez pour filtrer ou appuyez sur Entrée pour rechercher la base de données' 
       id="fullWidth"
-      sx={{ mr: 1 }} // Margin for the TextField
+      sx={{ mr: 1,pt:0,
+        mt: 0, }} // Margin for the TextField
     />
     <Box sx={{ p: 1,fontSize: 40 }}> {/* Padding for the Box containing the SearchIcon */}
       <SearchIcon color="secondary"/>

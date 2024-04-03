@@ -185,6 +185,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
       {!selectedBulkActions && (
          <>
         <CardHeader
+        sx={{mb:0,pb:0}}
           action={
             <Box width={150}>
               <FormControl fullWidth variant="outlined">
