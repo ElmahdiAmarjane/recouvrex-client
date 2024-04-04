@@ -27,8 +27,9 @@ import {
 
 import Label from "src/components/Label";
 import { CryptoOrder, CryptoOrderStatus } from "src/models/crypto_order";
-import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
-import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import { Case, CaseStatus } from "src/models/case";
+// import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+// import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import BulkActions from "./BulkActions";
 import CasesSearch from "./CasesSearch";
 
@@ -41,7 +42,7 @@ interface Filters {
   status?: CryptoOrderStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
+const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
   const map = {
     failed: {
       text: "Failed",
@@ -57,7 +58,38 @@ const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
     },
   };
 
-  const { text, color }: any = map[cryptoOrderStatus];
+  const caseStatusMap = {
+    Précontentieux: {
+      text: "Précontentieux",
+      color: "warning",
+    },
+    Radié: {
+      text: "Radié",
+      color: "error",
+    },
+    'Prêt douteux': {
+      text: "Prêt douteux",
+      color: "error",
+    },
+    Terminé: {
+      text: "Terminé",
+      color: "success",
+    },
+    'Saisie conservatoire immobilière initiée': {
+      text: "Saisie conservatoire immobilière initiée",
+      color: "info",
+    },
+    'Comité des impayés': {
+      text: "Comité des impayés",
+      color: "info",
+    },
+  };
+  
+
+
+  const { text, color }: any = caseStatusMap[caseStatus];
+
+ 
 
   return <Label color={color}>{text}</Label>;
 };
@@ -78,10 +110,10 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  cryptoOrders: CryptoOrder[],
+  cryptoOrders: Case[],
   page: number,
   limit: number
-): CryptoOrder[] => {
+): Case[] => {
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
@@ -173,7 +205,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
     selectedCryptoOrders.length < cryptoOrders.length;
   const selectedAllCryptoOrders =
     selectedCryptoOrders.length === cryptoOrders.length;
-  const theme = useTheme();
+  // const theme = useTheme();
 
   return (
     <Card>
@@ -184,7 +216,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
       )}
       {!selectedBulkActions && (
          <>
-        <CardHeader
+        {/* <CardHeader
         sx={{mb:0,pb:0}}
           action={
             <Box width={150}>
@@ -206,7 +238,10 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
             </Box>
           }
           title="Recouvrements"
-        />
+        /> */}
+        <Typography variant="h4" sx={{mt:1,ml:1}} >
+        Recouvrements
+              </Typography>
         <CasesSearch/>
        </>
       )}
@@ -215,14 +250,14 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
+              {/* <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
                   indeterminate={selectedSomeCryptoOrders}
                   onChange={handleSelectAllCryptoOrders}
                 />
-              </TableCell>
+              </TableCell> */}
               <TableCell>IDENTIFIANT</TableCell>
               <TableCell>DATE</TableCell>
               <TableCell>STATUS</TableCell>
@@ -239,25 +274,25 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
           <TableBody>
             {paginatedCryptoOrders.map((cryptoOrder) => {
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
+                cryptoOrder.identifiant
               );
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.id}
+                  key={cryptoOrder.identifiant}
                   selected={isCryptoOrderSelected}
                 >
                   {/* this is the first colomn its the checkbox */}
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
                       checked={isCryptoOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        handleSelectOneCryptoOrder(event, cryptoOrder.identifiant)
                       }
                       value={isCryptoOrderSelected}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   {/* the secend colomn in our case is DAtes */}
                   <TableCell>
                     <Typography
@@ -267,7 +302,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
+                      {cryptoOrder.identifiant}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, "MMMM dd yyyy")}
@@ -282,11 +317,13 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderID}
+                      {cryptoOrder.date}
                     </Typography>
                   </TableCell>
                   {/* the colomn 4 */}
-                  <TableCell>{getStatusLabel(cryptoOrder.status)}</TableCell>
+                  <TableCell>
+                    {getStatusLabel(cryptoOrder.statut)}
+                    </TableCell>
 
                   {/* the colomn 5 */}
                   <TableCell>
@@ -297,7 +334,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.nom}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {numeral(cryptoOrder.amount).format(
@@ -314,7 +351,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.type}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -326,7 +363,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.contrat}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -338,7 +375,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.facture}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -350,7 +387,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.montant}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -362,7 +399,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.fournisseur}
                     </Typography>
                   </TableCell>
 
@@ -375,7 +412,9 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {
+                        // empty cells
+                      }
                     </Typography>
                   </TableCell>
                   {/* the colomn 6 */}
@@ -390,7 +429,9 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {
+                        // empty cells
+                      }
                     </Typography>
                   </TableCell>
                

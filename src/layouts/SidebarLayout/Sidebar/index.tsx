@@ -65,7 +65,7 @@ function Sidebar() {
               {/* <Logo /> */}
             
               <Typography variant="h1" gutterBottom>
-              Recovrex
+              RECOUVREX
               </Typography>
             </Box>
           </Box>
@@ -127,7 +127,7 @@ function Sidebar() {
                 {/* this is where the logo will appear */}
                 {/* <Logo /> */}
                 <Typography variant="h1" gutterBottom>
-              Recovrex
+              RECOUVREX
               </Typography>
               </Box>
             </Box>

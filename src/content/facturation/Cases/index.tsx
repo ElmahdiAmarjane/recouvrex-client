@@ -15,13 +15,13 @@ function Cases() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           direction="row"
           justifyContent="center"
           alignItems="stretch"
-          spacing={3}
+          spacing={1}
         >
           <Grid item xs={12}>
             <ExistingCases />
