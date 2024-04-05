@@ -1,6 +1,9 @@
 import { FC, ChangeEvent, useState } from "react";
 import { format } from "date-fns";
 import numeral from "numeral";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import SyncIcon from "@mui/icons-material/Sync";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import PropTypes from "prop-types";
 import {
   Tooltip,
@@ -23,6 +26,10 @@ import {
   Typography,
   useTheme,
   CardHeader,
+  Grid,
+  Button,
+  Stack,
+  Link,
 } from "@mui/material";
 
 import Label from "src/components/Label";
@@ -67,7 +74,7 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Radié",
       color: "error",
     },
-    'Prêt douteux': {
+    "Prêt douteux": {
       text: "Prêt douteux",
       color: "error",
     },
@@ -75,21 +82,17 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Terminé",
       color: "success",
     },
-    'Saisie conservatoire immobilière initiée': {
+    "Saisie conservatoire immobilière initiée": {
       text: "Saisie conservatoire immobilière initiée",
       color: "info",
     },
-    'Comité des impayés': {
+    "Comité des impayés": {
       text: "Comité des impayés",
       color: "info",
     },
   };
-  
-
 
   const { text, color }: any = caseStatusMap[caseStatus];
-
- 
 
   return <Label color={color}>{text}</Label>;
 };
@@ -215,8 +218,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
         </Box>
       )}
       {!selectedBulkActions && (
-         <>
-        {/* <CardHeader
+        <>
+          {/* <CardHeader
         sx={{mb:0,pb:0}}
           action={
             <Box width={150}>
@@ -239,11 +242,44 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
           }
           title="Recouvrements"
         /> */}
-        <Typography variant="h4" sx={{mt:1,ml:1}} >
-        Recouvrements
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            // {...rest}
+          >
+            <Grid item>
+              <Typography variant="h4" sx={{ mt: 1, ml: 1 }}>
+                Recouvrements
               </Typography>
-        <CasesSearch/>
-       </>
+              <CasesSearch />
+            </Grid>
+            <Grid item>
+              <Stack
+                sx={{
+                  alignItems: "end",
+                  justifyContent: "space-between",
+                  mr: 2,
+                }}
+              >
+                <Button
+                  size="small"
+                  rel="noopener noreferrer"
+                  sx={{ mb: 1 }}
+                  variant="contained"
+                  startIcon={<AddTwoToneIcon fontSize="small" />}
+                >
+                  Ajouter
+                </Button>
+                <AutorenewIcon />
+              </Stack>
+            </Grid>
+          </Grid>
+          {/* <Typography variant="h4" sx={{ mt: 1, ml: 1 }}>
+            Recouvrements
+          </Typography>
+          <CasesSearch /> */}
+        </>
       )}
       <Divider />
       <TableContainer>
@@ -302,7 +338,9 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.identifiant}
+                      <Link href={`/facturation/case/${cryptoOrder.id}`} rel="noopener noreferrer">
+                        {cryptoOrder.id}
+                      </Link>
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, "MMMM dd yyyy")}
@@ -317,12 +355,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.date}
+                      {cryptoOrder.startDate}
                     </Typography>
                   </TableCell>
                   {/* the colomn 4 */}
                   <TableCell>
-                    {getStatusLabel(cryptoOrder.statut)}
+                    {/* {getStatusLabel(cryptoOrder.statut.status)} */}
                     </TableCell>
 
                   {/* the colomn 5 */}
@@ -334,7 +372,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.nom}
+                      {/* {cryptoOrder.nom} */}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {numeral(cryptoOrder.amount).format(
@@ -351,7 +389,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.type}
+                      {/* {cryptoOrder.type} */}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -363,7 +401,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.contrat}
+                      {/* {cryptoOrder.contrat} */}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -375,7 +413,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.facture}
+                      {/* {cryptoOrder.facture} */}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -387,7 +425,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.montant}
+                      {/* {cryptoOrder.montant} */}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -399,7 +437,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.fournisseur}
+                      {/* {cryptoOrder.fournisseur} */}
                     </Typography>
                   </TableCell>
 
@@ -434,12 +472,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       }
                     </Typography>
                   </TableCell>
-               
+
                   {/* this coloms will be commanted for now we donot use it I guess */}
                   {/* the colomn 7 the last one for edit and delete */}
                   {/* <TableCell align="right"> */}
-                    {/* the button or icon for editing */}
-                    {/* <Tooltip title="Edit Order" arrow>
+                  {/* the button or icon for editing */}
+                  {/* <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
                           "&:hover": {
@@ -454,8 +492,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       </IconButton>
                     </Tooltip> */}
 
-                    {/* the button for deleting */}
-                    {/* <Tooltip title="Delete Order" arrow>
+                  {/* the button for deleting */}
+                  {/* <Tooltip title="Delete Order" arrow>
                       <IconButton
                         sx={{
                           "&:hover": { background: theme.colors.error.lighter },

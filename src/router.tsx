@@ -42,6 +42,9 @@ const UserSettings = Loader(
 const Cases = Loader(
   lazy(() => import('src/content/facturation/Cases'))
 );
+const Case = Loader(
+  lazy(() => import('src/content/facturation/Cases/Case'))
+);
 
 
 // Components
@@ -158,7 +161,11 @@ const routes: RouteObject[] = [
         path: 'cases',
         element: <Cases />
       },
-     
+      {
+        // Use a dynamic segment for case IDs
+        path: 'case/:caseId',
+        element: <Case />
+      },
     ]
   },
   {

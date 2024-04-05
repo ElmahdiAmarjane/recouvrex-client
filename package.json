@@ -18,6 +18,7 @@
     "@mui/styles": "^5.15.14",
     "@mui/x-date-pickers": "^7.1.0",
     "apexcharts": "^3.48.0",
+    "axios": "^1.6.8",
     "date-fns": "^3.6.0",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",

@@ -3,8 +3,11 @@ import { Case } from 'src/models/case';
 import CasesTable from './CasesTable';
 // import { subDays } from 'date-fns';
 
+import { useEffect, useState } from 'react';
+import { getFilteredCasesByUser } from 'src/utils/api/case/caseApiCall';
+
 function ExistingCases() {
-const cases: Case[] = [
+const cases_old: Case[] = [
     {
       identifiant: "COL00000062",
       date: "31/03/2023",
@@ -205,11 +208,29 @@ const cases: Case[] = [
     },
     // ... additional case objects
   ];
+
+
+  const [cases, setCases] = useState<Case[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getFilteredCasesByUser("3");
+        setCases(result);
+        console.log(result);
+      } catch (error) {
+        // Handle error
+        console.error('Error fetching cases for user by userId:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   
 
   return (
     <Card>
-      <CasesTable cryptoOrders={cases} />
+     {cases&& <CasesTable cryptoOrders={cases} />}
     </Card>
   );
 }
