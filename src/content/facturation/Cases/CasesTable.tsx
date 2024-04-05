@@ -339,6 +339,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       noWrap
                     >
                       <Link href={`/facturation/case/${cryptoOrder.id}`} rel="noopener noreferrer">
+                       {/* add a functoin for making the id to be in 10 digits like 1-->0000000001 */}
                         {cryptoOrder.id}
                       </Link>
                     </Typography>
@@ -372,7 +373,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.nom} */}
+                      {cryptoOrder.thirdParty.firstName} {cryptoOrder.thirdParty.lastName} 
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {numeral(cryptoOrder.amount).format(
@@ -389,7 +390,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.type} */}
+                      {cryptoOrder.thirdParty.tiersType}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
