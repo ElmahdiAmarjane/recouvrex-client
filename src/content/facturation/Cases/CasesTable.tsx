@@ -1,7 +1,8 @@
-import { FC, ChangeEvent, useState } from "react";
+import { FC, ChangeEvent, useState, useEffect } from "react";
 import { format } from "date-fns";
 import numeral from "numeral";
 import PropTypes from "prop-types";
+import axios, { AxiosResponse } from 'axios';
 import {
   Tooltip,
   Divider,
@@ -26,158 +27,181 @@ import {
 } from "@mui/material";
 
 import Label from "src/components/Label";
-import { CryptoOrder, CryptoOrderStatus } from "src/models/crypto_order";
+// import { CryptoOrder, CryptoOrderStatus } from "src/models/crypto_order";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import BulkActions from "./BulkActions";
 import CasesSearch from "./CasesSearch";
+import { Case } from "src/models/Case";
 
-interface CasesTableProps {
-  className?: string;
-  cryptoOrders: CryptoOrder[];
-}
+// interface CasesTableProps {
+//   className?: string;
+//   cryptoOrders: CryptoOrder[];
+// }
 
-interface Filters {
-  status?: CryptoOrderStatus;
-}
+// interface Filters {
+//   status?: CryptoOrderStatus;
+// }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
-  const map = {
-    failed: {
-      text: "Failed",
-      color: "error",
-    },
-    completed: {
-      text: "Completed",
-      color: "success",
-    },
-    pending: {
-      text: "Pending",
-      color: "warning",
-    },
-  };
+// const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
+//   const map = {
+//     failed: {
+//       text: "Failed",
+//       color: "error",
+//     },
+//     completed: {
+//       text: "Completed",
+//       color: "success",
+//     },
+//     pending: {
+//       text: "Pending",
+//       color: "warning",
+//     },
+//   };
 
-  const { text, color }: any = map[cryptoOrderStatus];
+  // const { text, color }: any = map[cryptoOrderStatus];
 
-  return <Label color={color}>{text}</Label>;
-};
+//   return <Label color={color}>{text}</Label>;
+// };
 
-const applyFilters = (
-  cryptoOrders: CryptoOrder[],
-  filters: Filters
-): CryptoOrder[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
-    let matches = true;
+// const applyFilters = (
+//   cryptoOrders: CryptoOrder[],
+//   filters: Filters
+// ): CryptoOrder[] => {
+//   return cryptoOrders.filter((cryptoOrder) => {
+//     let matches = true;
 
-    if (filters.status && cryptoOrder.status !== filters.status) {
-      matches = false;
-    }
+//     if (filters.status && cryptoOrder.status !== filters.status) {
+//       matches = false;
+//     }
 
-    return matches;
-  });
-};
+//     return matches;
+//   });
+// };
 
-const applyPagination = (
-  cryptoOrders: CryptoOrder[],
-  page: number,
-  limit: number
-): CryptoOrder[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
-};
+// const applyPagination = (
+//   cryptoOrders: CryptoOrder[],
+//   page: number,
+//   limit: number
+// ): CryptoOrder[] => {
+//   return cryptoOrders.slice(page * limit, page * limit + limit);
+// };
 
-const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
-    []
-  );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
-  const [filters, setFilters] = useState<Filters>({
-    status: null,
-  });
+const CasesTable: FC<{ cases: Case[] }> = ({ cases }) => {
+//   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
+//     []
+//   );
+  // const selectedBulkActions = selectedCryptoOrders.length > 0;
+  // const [page, setPage] = useState<number>(0);
+  // const [limit, setLimit] = useState<number>(5);
+  // const [filters, setFilters] = useState<Filters>({
+  //   status: null,
+  // });
 
-  const statusOptions = [
-    {
-      id: "all",
-      name: "All",
-    },
-    {
-      id: "completed",
-      name: "Completed",
-    },
-    {
-      id: "pending",
-      name: "Pending",
-    },
-    {
-      id: "failed",
-      name: "Failed",
-    },
-  ];
+  // const statusOptions = [
+  //   {
+  //     id: "all",
+  //     name: "All",
+  //   },
+  //   {
+  //     id: "completed",
+  //     name: "Completed",
+  //   },
+  //   {
+  //     id: "pending",
+  //     name: "Pending",
+  //   },
+  //   {
+  //     id: "failed",
+  //     name: "Failed",
+  //   },
+  // ];
 
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    let value = null;
+  // const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  //   let value = null;
 
-    if (e.target.value !== "all") {
-      value = e.target.value;
-    }
+  //   if (e.target.value !== "all") {
+  //     value = e.target.value;
+  //   }
 
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value,
-    }));
-  };
+  //   setFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     status: value,
+  //   }));
+  // };
 
-  const handleSelectAllCryptoOrders = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedCryptoOrders(
-      event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
-        : []
-    );
-  };
+  // const handleSelectAllCryptoOrders = (
+  //   event: ChangeEvent<HTMLInputElement>
+  // ): void => {
+  //   setSelectedCryptoOrders(
+  //     event.target.checked
+  //       ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
+  //       : []
+  //   );
+  // };
 
-  const handleSelectOneCryptoOrder = (
-    event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
-  ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId,
-      ]);
-    } else {
-      setSelectedCryptoOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== cryptoOrderId)
-      );
-    }
-  };
+  // const handleSelectOneCryptoOrder = (
+  //   event: ChangeEvent<HTMLInputElement>,
+  //   cryptoOrderId: string
+  // ): void => {
+  //   if (!selectedCryptoOrders.includes(cryptoOrderId)) {
+  //     setSelectedCryptoOrders((prevSelected) => [
+  //       ...prevSelected,
+  //       cryptoOrderId,
+  //     ]);
+  //   } else {
+  //     setSelectedCryptoOrders((prevSelected) =>
+  //       prevSelected.filter((id) => id !== cryptoOrderId)
+  //     );
+  //   }
+  // };
 
-  const handlePageChange = (event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+  // const handlePageChange = (event: any, newPage: number): void => {
+  //   setPage(newPage);
+  // };
 
-  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
+  // const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  //   setLimit(parseInt(event.target.value));
+  // };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
-    page,
-    limit
-  );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
-  const theme = useTheme();
+  // const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
+  // const paginatedCryptoOrders = applyPagination(
+  //   filteredCryptoOrders,
+  //   page,
+  //   limit
+  // // );
+  // const selectedSomeCryptoOrders =
+  //   selectedCryptoOrders.length > 0 &&
+  //   selectedCryptoOrders.length < cryptoOrders.length;
+  // const selectedAllCryptoOrders =
+  //   selectedCryptoOrders.length === cryptoOrders.length;
+  // const theme = useTheme();
+  ////////////////////////////
+///////////////////////
+//////////////////////////////
+///////////////////////////////////
+
+//const [cases, setCases] = useState<Case[] | undefined>(undefined);
+
+// // Function to fetch filtered cases and update state
+// const fetchCases = async (caseId: string, status: string, procedure: string) => {
+//   try {
+//     const response = await getFilteredCases(caseId, status, procedure);
+//     setCases(response.data); // Assuming response.data is an array of cases
+//   } catch (error) {
+//     console.error('Error fetching cases:', error);
+//   }
+// };
+//   // Call fetchCases when component mounts or whenever needed
+//   useEffect(() => {
+//     fetchCases('1', '1', '1');
+//     console.log(cases);
+//   }, []); // Empty dependency array ensures it runs only once when component mounts
+
 
   return (
     <Card>
-      {selectedBulkActions && (
+      {/* {selectedBulkActions && (
         <Box flex={1} p={2}>
           <BulkActions />
         </Box>
@@ -209,19 +233,19 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
         />
         <CasesSearch/>
        </>
-      )}
+      )} */}
       <Divider />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
-                <Checkbox
+                {/* <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
                   indeterminate={selectedSomeCryptoOrders}
                   onChange={handleSelectAllCryptoOrders}
-                />
+                /> */}
               </TableCell>
               <TableCell>IDENTIFIANT</TableCell>
               <TableCell>DATE</TableCell>
@@ -237,26 +261,26 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
-              );
+            {cases && cases.map((cases) => {
+              // const isCryptoOrderSelected = selectedCryptoOrders.includes(
+              //   cases.id.toString()
+              // );
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.id}
-                  selected={isCryptoOrderSelected}
+                  key={cases.id}
+                  // selected={isCryptoOrderSelected}
                 >
                   {/* this is the first colomn its the checkbox */}
                   <TableCell padding="checkbox">
-                    <Checkbox
+                    {/* <Checkbox
                       color="primary"
                       checked={isCryptoOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        handleSelectOneCryptoOrder(event, cryptoOrder.id.toString())
                       }
                       value={isCryptoOrderSelected}
-                    />
+                    /> */}
                   </TableCell>
                   {/* the secend colomn in our case is DAtes */}
                   <TableCell>
@@ -267,7 +291,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
+                      {cases.caseId}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, "MMMM dd yyyy")}
@@ -282,11 +306,11 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderID}
+                      {cases.thirdParty?.businessEmail}
                     </Typography>
                   </TableCell>
                   {/* the colomn 4 */}
-                  <TableCell>{getStatusLabel(cryptoOrder.status)}</TableCell>
+                  {/* <TableCell>{getStatusLabel(cryptoOrder.caseId)}</TableCell> */}
 
                   {/* the colomn 5 */}
                   <TableCell>
@@ -297,7 +321,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.procedure?.procedureLabel}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {numeral(cryptoOrder.amount).format(
@@ -314,7 +338,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.insuranceSettlementAmout}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -326,7 +350,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.status.status}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -338,7 +362,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.status.id}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -350,7 +374,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.startDate}
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
@@ -362,7 +386,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.startDate}
                     </Typography>
                   </TableCell>
 
@@ -375,7 +399,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.startDate}
                     </Typography>
                   </TableCell>
                   {/* the colomn 6 */}
@@ -390,7 +414,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cases.startDate}
                     </Typography>
                   </TableCell>
                
@@ -433,7 +457,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box p={2}>
+      {/* <Box p={2}>
         <TablePagination
           component="div"
           count={filteredCryptoOrders.length}
@@ -443,17 +467,17 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
           rowsPerPage={limit}
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
-      </Box>
+      </Box> */}
     </Card>
   );
 };
 
 CasesTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired,
+  cases: PropTypes.array.isRequired,
 };
 
 CasesTable.defaultProps = {
-  cryptoOrders: [],
+  cases: [],
 };
 
 export default CasesTable;

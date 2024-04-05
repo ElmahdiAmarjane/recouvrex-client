@@ -11,9 +11,10 @@ import { Box } from '@mui/material';
 export interface InforCardWorningProps {
   sx?: SxProps;
   value: string;
+  title:String;
 }
 
-export default function InforCardWorning({ value, sx }: InforCardWorningProps): React.JSX.Element {
+export default function InforCardWorning({ title,value, sx }: InforCardWorningProps): React.JSX.Element {
   return (
     <Box sx={{m:1}}>
     <Card sx={sx}>
@@ -21,7 +22,7 @@ export default function InforCardWorning({ value, sx }: InforCardWorningProps): 
         <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-              Total Profit
+              {title}
             </Typography>
             <Typography variant="h4">{value}</Typography>
           </Stack>

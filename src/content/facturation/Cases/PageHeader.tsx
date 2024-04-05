@@ -31,35 +31,35 @@ function PageHeader() {
        <InforCardWorning/>
       </Grid> */}
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning  value="$15k" />
+        <InforCardWorning  value="$10000k"  title="Brouillon"/>
       </Grid>
       <Grid lg={2} md={3}  sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k" title="Pré-douteux"/>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k" title="Douteux" />
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k"  title="Très douteux"/>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k" title="Pré-contentieux"/>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k" title="Contentieux"/>
       </Grid>
       {/* the secend row */}
       <Grid lg={4} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k" title="Comité des impayes" />
       </Grid>
       <Grid lg={4} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k"  title="Comité déclassement agence" />
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k" title="Radié"/>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning value="$15k" />
+        <InforCardWorning value="$15k"  title="Terminé"/>
       </Grid>
     </Grid>
   );
