@@ -39,7 +39,7 @@ function Overview() {
           </TypographyH1>
         <Button
             component={RouterLink}
-            to="/facturation/cases"
+            to="/cases"
             size="large"
             variant="contained"
           >

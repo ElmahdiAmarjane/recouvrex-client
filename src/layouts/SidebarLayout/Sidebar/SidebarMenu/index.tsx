@@ -196,7 +196,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/facturation/factures"
+                  to="/factures"
                   startIcon={<BrightnessLowTwoToneIcon />}
                 >
                   Factures
@@ -207,7 +207,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/facturation/reglements"
+                  to="/reglements"
                   startIcon={<MmsTwoToneIcon />}
                 >
                   Reglements
@@ -218,7 +218,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/facturation/impaye"
+                  to="/impaye"
                   startIcon={<MmsTwoToneIcon />}
                 >
                  Impayé 
@@ -229,7 +229,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/facturation/cases"
+                  to="/cases"
                   startIcon={<MmsTwoToneIcon />}
                 >
                  Recouvrements
@@ -242,7 +242,7 @@ function SidebarMenu() {
 
         {/* I will just comment all this for now */}
         {/* the start of one List */}
-        {/* <List component="div">
+        <List component="div">
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
@@ -258,9 +258,9 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List> */}
+        </List>
         {/* the start of one List */}
-        {/* <List
+        <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -294,10 +294,10 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List> */}
+        </List>
 
         {/* the start of one List */}
-        {/* <List
+        <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -320,10 +320,10 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List> */}
+        </List>
 
         {/* the start of one List */}
-        {/* <List
+        <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -357,7 +357,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List> */}
+        </List>
 
         {/* the start of one List */}
         <List

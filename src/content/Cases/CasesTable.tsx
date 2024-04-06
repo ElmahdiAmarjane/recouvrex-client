@@ -338,7 +338,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      <Link href={`/facturation/case/${cryptoOrder.id}`} rel="noopener noreferrer">
+                      <Link href={`/case/${cryptoOrder.id}`} rel="noopener noreferrer">
                        {/* add a functoin for making the id to be in 10 digits like 1-->0000000001 */}
                         {cryptoOrder.id}
                       </Link>
@@ -361,7 +361,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                   </TableCell>
                   {/* the colomn 4 */}
                   <TableCell>
-                    {/* {getStatusLabel(cryptoOrder.statut.status)} */}
+                    {getStatusLabel(cryptoOrder.status.status)}
                     </TableCell>
 
                   {/* the colomn 5 */}

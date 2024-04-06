@@ -40,10 +40,10 @@ const UserSettings = Loader(
 //here we add for our Applicatoin Recouvrex
 //facturation
 const Cases = Loader(
-  lazy(() => import('src/content/facturation/Cases'))
+  lazy(() => import('src/content/Cases'))
 );
 const Case = Loader(
-  lazy(() => import('src/content/facturation/Cases/Case'))
+  lazy(() => import('src/content/Cases/Case'))
 );
 
 
@@ -150,15 +150,11 @@ const routes: RouteObject[] = [
   },
   // l'ets add our navigation here for facturation 
   {
-    path: 'facturation',
+    path: 'cases',
     element: <SidebarLayout />,
     children: [
       {
         path: '',
-        element: <Navigate to="cases" replace />
-      },
-      {
-        path: 'cases',
         element: <Cases />
       },
       {

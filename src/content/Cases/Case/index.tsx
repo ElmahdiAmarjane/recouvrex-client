@@ -4,6 +4,10 @@ import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 import { useParams } from 'react-router-dom';
 import CaseHeader from './CaseHeader';
+import CaseReferences from './caseReferences';
+import CaseTasks from './caseTasks';
+import CaseIntervenants from './caseIntervenants';
+import CaseNonPaidInvoices from './caseNonPaidInvoices';
 
   
 function Case() {
@@ -27,8 +31,17 @@ function Case() {
           alignItems="stretch"
           spacing={1}
         >
+          <Grid item xs={12}lg={4.5}>
+           <CaseReferences/>
+          </Grid>
+          <Grid item xs={12}lg={7.5}>
+           <CaseTasks/>
+          </Grid>
+          <Grid item xs={12} >
+          <CaseIntervenants/>
+          </Grid>
           <Grid item xs={12}>
-           empty {caseId}
+          <CaseNonPaidInvoices/>
           </Grid>
         </Grid>
       </Container>
