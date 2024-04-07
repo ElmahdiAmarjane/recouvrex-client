@@ -189,6 +189,15 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
     }
   };
 
+  const formatNumberWithPrefix = (number, prefix = 'COL', totalLength = 9) => {
+    // Calculate how many zeros we need to add after the prefix
+    const zerosNeeded = totalLength - prefix.length - number.toString().length;
+    // Create a string with the required zeros
+    const zeros = '0'.repeat(zerosNeeded);
+    // Return the formatted string
+    return `${prefix}${zeros}${number}`;
+  };
+
   const handlePageChange = (event: any, newPage: number): void => {
     setPage(newPage);
   };
@@ -338,9 +347,10 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      <Link href={`/case/${cryptoOrder.id}`} rel="noopener noreferrer">
+                      <Link href={`/case/${formatNumberWithPrefix(cryptoOrder.id)}`} rel="noopener noreferrer">
                        {/* add a functoin for making the id to be in 10 digits like 1-->0000000001 */}
-                        {cryptoOrder.id}
+                        {formatNumberWithPrefix(cryptoOrder.id)}
+
                       </Link>
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
