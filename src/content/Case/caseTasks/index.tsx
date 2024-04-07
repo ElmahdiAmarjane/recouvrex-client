@@ -8,6 +8,7 @@ import TasksTable from "./TasksTable";
 import NewTask from "./newTask";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import { NavLink as RouterLink } from 'react-router-dom';
 
 export default function CaseTasks() {
   return (
@@ -30,13 +31,16 @@ export default function CaseTasks() {
           >
             {/* this is the dialog for adding new tast */}
             <NewTask />
-            <Tooltip arrow title="refrech">
+            <Tooltip arrow title="Rafraîchir">
               <IconButton size="large">
                 <AutorenewIcon sx={{ color: "green" }} fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip arrow title="icon">
-              <IconButton size="large">
+            <Tooltip arrow title="List des tâches">
+              <IconButton 
+               component={RouterLink}
+               to="/tasks"  
+              size="large">
                 <FormatListBulletedIcon fontSize="small" />
               </IconButton>
             </Tooltip>

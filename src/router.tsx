@@ -45,6 +45,9 @@ const Cases = Loader(
 const Case = Loader(
   lazy(() => import('src/content/Case'))
 );
+const Tasks = Loader(
+  lazy(() => import('src/content/tasks'))
+);
 
 
 // Components
@@ -169,6 +172,16 @@ const routes: RouteObject[] = [
       },
     ]
   }, 
+  {
+    path: 'tasks',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Tasks />
+      },
+    ]
+  },
   {
     path: 'management',
     element: <SidebarLayout />,
