@@ -43,7 +43,7 @@ const Cases = Loader(
   lazy(() => import('src/content/Cases'))
 );
 const Case = Loader(
-  lazy(() => import('src/content/Cases/Case'))
+  lazy(() => import('src/content/Case'))
 );
 
 
@@ -157,13 +157,18 @@ const routes: RouteObject[] = [
         path: '',
         element: <Cases />
       },
+    ]
+  },
+  {
+    path: 'case/:caseId',
+    element: <SidebarLayout />,
+    children: [
       {
-        // Use a dynamic segment for case IDs
-        path: 'case/:caseId',
+        path: '',
         element: <Case />
       },
     ]
-  },
+  }, 
   {
     path: 'management',
     element: <SidebarLayout />,
