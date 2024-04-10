@@ -1,4 +1,16 @@
-export type CaseStatus = 'Précontentieux' | 'Radié' | 'Prêt douteux' | 'Terminé' | 'Saisie conservatoire immobilière initiée' | 'Comité des impayés';
+export type CaseStatus = 
+  'Précontentieux' | 
+  'Radié' | 
+  'Prêt douteux' | 
+  'Terminé' | 
+  'Saisie conservatoire immobilière initiée' | 
+  'Comité des impayés' | 
+  'Pré-douteux' | 
+  'Douteux' | 
+  'Comité de déclassement agence' | 
+  'Contentieux' | 
+  'Pré-contentieux' | 
+  'Saisie conservation immobilière initiée';
 
 export interface Case {
   identifiant: string;

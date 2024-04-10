@@ -21,6 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from '@mui/material';
+import AlertDialog from './AlertDialog';
 
 interface Data {
   id: number;
@@ -260,11 +261,12 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        // <Tooltip title="Delete">
+        //   <IconButton>
+        //     <DeleteIcon />
+        //   </IconButton>
+        // </Tooltip>
+            <AlertDialog/>
       ) : (
         <>
          {/* <Tooltip title="Filter list">

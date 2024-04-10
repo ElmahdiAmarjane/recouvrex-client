@@ -12,7 +12,7 @@ function ExistingCases() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getFilteredCasesByUser("3");
+        const result = await getFilteredCasesByUser("1");
         setCases(result);
         console.log(result);
       } catch (error) {

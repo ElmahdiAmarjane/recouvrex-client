@@ -65,12 +65,18 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
     },
   };
 
+  console.log(caseStatus+"\n")
+
   const caseStatusMap = {
-    Précontentieux: {
+    "Précontentieux": {
       text: "Précontentieux",
       color: "warning",
     },
-    Radié: {
+    "Pré-contentieux": {
+      text: "Pré-contentieux",
+      color: "warning",
+    },
+    "Radié": {
       text: "Radié",
       color: "error",
     },
@@ -78,7 +84,7 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Prêt douteux",
       color: "error",
     },
-    Terminé: {
+    "Terminé": {
       text: "Terminé",
       color: "success",
     },
@@ -90,7 +96,28 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Comité des impayés",
       color: "info",
     },
+    "Pré-douteux": {
+      text: "Pré-douteux",
+      color: "warning",
+    },
+    "Douteux": {
+      text: "Douteux",
+      color: "error",
+    },
+    "Comité de déclassement agence": {
+      text: "Comité de déclassement agence",
+      color: "info",
+    },
+    "Contentieux": {
+      text: "Contentieux",
+      color: "error",
+    },
+    "Saisie conservation immobilière initiée": { // This appears similar to "Saisie conservatoire immobilière initiée", adjusted for consistency
+      text: "Saisie conservation immobilière initiée",
+      color: "info",
+    },
   };
+  
 
   const { text, color }: any = caseStatusMap[caseStatus];
 
@@ -347,9 +374,9 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      <Link href={`/case/${formatNumberWithPrefix(cryptoOrder.id)}`} rel="noopener noreferrer">
+                      <Link href={`/case/${cryptoOrder.caseId}`} rel="noopener noreferrer">
                        {/* add a functoin for making the id to be in 10 digits like 1-->0000000001 */}
-                        {formatNumberWithPrefix(cryptoOrder.id)}
+                        {(cryptoOrder.caseId)}
 
                       </Link>
                     </Typography>
@@ -372,6 +399,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                   {/* the colomn 4 */}
                   <TableCell>
                     {getStatusLabel(cryptoOrder.status.status)}
+                   {/* { (cryptoOrder?.status?.status)} */}
                     </TableCell>
 
                   {/* the colomn 5 */}
