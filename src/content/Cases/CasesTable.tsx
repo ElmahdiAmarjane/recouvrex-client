@@ -50,25 +50,25 @@ interface Filters {
 }
 
 const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
-  const map = {
-    failed: {
-      text: "Failed",
-      color: "error",
-    },
-    completed: {
-      text: "Completed",
-      color: "success",
-    },
-    pending: {
-      text: "Pending",
-      color: "warning",
-    },
-  };
+  // const map = {
+  //   failed: {
+  //     text: "Failed",
+  //     color: "error",
+  //   },
+  //   completed: {
+  //     text: "Completed",
+  //     color: "success",
+  //   },
+  //   pending: {
+  //     text: "Pending",
+  //     color: "warning",
+  //   },
+  // };
 
-  console.log(caseStatus+"\n")
+  console.log(caseStatus + "\n");
 
   const caseStatusMap = {
-    "Précontentieux": {
+    Précontentieux: {
       text: "Précontentieux",
       color: "warning",
     },
@@ -76,7 +76,7 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Pré-contentieux",
       color: "warning",
     },
-    "Radié": {
+    Radié: {
       text: "Radié",
       color: "error",
     },
@@ -84,7 +84,7 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Prêt douteux",
       color: "error",
     },
-    "Terminé": {
+    Terminé: {
       text: "Terminé",
       color: "success",
     },
@@ -100,7 +100,7 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Pré-douteux",
       color: "warning",
     },
-    "Douteux": {
+    Douteux: {
       text: "Douteux",
       color: "error",
     },
@@ -108,16 +108,16 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
       text: "Comité de déclassement agence",
       color: "info",
     },
-    "Contentieux": {
+    Contentieux: {
       text: "Contentieux",
       color: "error",
     },
-    "Saisie conservation immobilière initiée": { // This appears similar to "Saisie conservatoire immobilière initiée", adjusted for consistency
+    "Saisie conservation immobilière initiée": {
+      // This appears similar to "Saisie conservatoire immobilière initiée", adjusted for consistency
       text: "Saisie conservation immobilière initiée",
       color: "info",
     },
   };
-  
 
   const { text, color }: any = caseStatusMap[caseStatus];
 
@@ -216,11 +216,11 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
     }
   };
 
-  const formatNumberWithPrefix = (number, prefix = 'COL', totalLength = 9) => {
+  const formatNumberWithPrefix = (number, prefix = "COL", totalLength = 9) => {
     // Calculate how many zeros we need to add after the prefix
     const zerosNeeded = totalLength - prefix.length - number.toString().length;
     // Create a string with the required zeros
-    const zeros = '0'.repeat(zerosNeeded);
+    const zeros = "0".repeat(zerosNeeded);
     // Return the formatted string
     return `${prefix}${zeros}${number}`;
   };
@@ -285,7 +285,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
             // {...rest}
           >
             <Grid item>
-              <Typography variant="h4" sx={{ mt: 1, ml: 1 }}>
+              <Typography variant="h3" sx={{ mt: 1, ml: 1 }}>
                 Recouvrements
               </Typography>
               <CasesSearch />
@@ -307,7 +307,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                 >
                   Ajouter
                 </Button>
-                <AutorenewIcon />
+
+                <Tooltip arrow title="Rafraîchir">
+                  <IconButton color="primary">
+                    <AutorenewIcon />
+                  </IconButton>
+                </Tooltip>
               </Stack>
             </Grid>
           </Grid>
@@ -374,10 +379,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      <Link href={`/case/${cryptoOrder.caseId}`} rel="noopener noreferrer">
-                       {/* add a functoin for making the id to be in 10 digits like 1-->0000000001 */}
-                        {(cryptoOrder.caseId)}
-
+                      <Link
+                        href={`/case/${cryptoOrder.caseId}`}
+                        rel="noopener noreferrer"
+                      >
+                        {/* add a functoin for making the id to be in 10 digits like 1-->0000000001 */}
+                        {cryptoOrder.caseId}
                       </Link>
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
@@ -399,8 +406,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                   {/* the colomn 4 */}
                   <TableCell>
                     {getStatusLabel(cryptoOrder.status.status)}
-                   {/* { (cryptoOrder?.status?.status)} */}
-                    </TableCell>
+                    {/* { (cryptoOrder?.status?.status)} */}
+                  </TableCell>
 
                   {/* the colomn 5 */}
                   <TableCell>
@@ -411,7 +418,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.thirdParty.firstName} {cryptoOrder.thirdParty.lastName} 
+                      {cryptoOrder.thirdParty.firstName}{" "}
+                      {cryptoOrder.thirdParty.lastName}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {numeral(cryptoOrder.amount).format(

@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import ExelIcon from "./ExelIcon";
+import { IconButton, Tooltip } from "@mui/material";
 export default function CasesSearch() {
   return (
     <Box
@@ -17,17 +18,30 @@ export default function CasesSearch() {
     }}
   >
     <TextField 
+      size="small"
       fullWidth 
       placeholder='Tapez pour filtrer ou appuyez sur Entrée pour rechercher la base de données' 
       id="fullWidth"
       sx={{ mr: 1,pt:0,
         mt: 0, }} // Margin for the TextField
     />
-    <Box sx={{ p: 1,fontSize: 40 }}> {/* Padding for the Box containing the SearchIcon */}
-      <SearchIcon color="secondary"/>
+    <Box > {/* Padding for the Box containing the SearchIcon */}
+     
+      <Tooltip arrow title="Search">
+        <IconButton color="primary" >
+        <SearchIcon color="secondary"/>
+        </IconButton>
+      </Tooltip>
+
     </Box>
-    <Box sx={{ p: 1,fontSize: 40 }}> {/* Padding for the Box containing the SearchIcon */}
-      <ExelIcon />
+    <Box > {/* Padding for the Box containing the SearchIcon */}
+     
+
+      <Tooltip arrow title="Exel">
+        <IconButton color="primary" >
+        <ExelIcon />
+        </IconButton>
+      </Tooltip>
     </Box>
   </Box>
   );

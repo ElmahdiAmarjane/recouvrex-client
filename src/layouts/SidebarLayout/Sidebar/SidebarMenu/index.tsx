@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from "react";
 
 import {
   ListSubheader,
@@ -7,30 +7,44 @@ import {
   List,
   styled,
   Button,
-  ListItem
-} from '@mui/material';
-import { NavLink as RouterLink } from 'react-router-dom';
-import { SidebarContext } from 'src/contexts/SidebarContext';
+  ListItem,
+} from "@mui/material";
+import { NavLink as RouterLink } from "react-router-dom";
+import { SidebarContext } from "src/contexts/SidebarContext";
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
-import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
-import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
-import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
-import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-import FilterVintageTwoToneIcon from '@mui/icons-material/FilterVintageTwoTone';
-import HowToVoteTwoToneIcon from '@mui/icons-material/HowToVoteTwoTone';
-import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone';
-import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
-import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
-import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwoTone';
-import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
-import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
+import DesignServicesTwoToneIcon from "@mui/icons-material/DesignServicesTwoTone";
+import BrightnessLowTwoToneIcon from "@mui/icons-material/BrightnessLowTwoTone";
+import MmsTwoToneIcon from "@mui/icons-material/MmsTwoTone";
+import TableChartTwoToneIcon from "@mui/icons-material/TableChartTwoTone";
+import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
+import BallotTwoToneIcon from "@mui/icons-material/BallotTwoTone";
+import BeachAccessTwoToneIcon from "@mui/icons-material/BeachAccessTwoTone";
+import EmojiEventsTwoToneIcon from "@mui/icons-material/EmojiEventsTwoTone";
+import FilterVintageTwoToneIcon from "@mui/icons-material/FilterVintageTwoTone";
+import HowToVoteTwoToneIcon from "@mui/icons-material/HowToVoteTwoTone";
+import LocalPharmacyTwoToneIcon from "@mui/icons-material/LocalPharmacyTwoTone";
+import RedeemTwoToneIcon from "@mui/icons-material/RedeemTwoTone";
+import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
+import TrafficTwoToneIcon from "@mui/icons-material/TrafficTwoTone";
+import CheckBoxTwoToneIcon from "@mui/icons-material/CheckBoxTwoTone";
+import ChromeReaderModeTwoToneIcon from "@mui/icons-material/ChromeReaderModeTwoTone";
+import WorkspacePremiumTwoToneIcon from "@mui/icons-material/WorkspacePremiumTwoTone";
+import CameraFrontTwoToneIcon from "@mui/icons-material/CameraFrontTwoTone";
+import DisplaySettingsTwoToneIcon from "@mui/icons-material/DisplaySettingsTwoTone";
+// import NestedList from './NestedList';
+// =====================================
+
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
+
+// =====================================
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -72,8 +86,10 @@ const SubMenuWrapper = styled(Box)(
             color: ${theme.palette.primary.contrastText};
           }
         }
+
     
-        .MuiButton-root {
+    
+        .MuiButton-root  {
           display: flex;
           color: ${theme.colors.alpha.trueWhite[70]};
           background-color: transparent;
@@ -83,7 +99,7 @@ const SubMenuWrapper = styled(Box)(
 
           .MuiButton-startIcon,
           .MuiButton-endIcon {
-            transition: ${theme.transitions.create(['color'])};
+            transition: ${theme.transitions.create(["color"])};
 
             .MuiSvgIcon-root {
               font-size: inherit;
@@ -147,8 +163,8 @@ const SubMenuWrapper = styled(Box)(
                 background: ${theme.colors.alpha.trueWhite[100]};
                 opacity: 0;
                 transition: ${theme.transitions.create([
-                  'transform',
-                  'opacity'
+                  "transform",
+                  "opacity",
                 ])};
                 width: 6px;
                 height: 6px;
@@ -171,15 +187,95 @@ const SubMenuWrapper = styled(Box)(
         }
       }
     }
+
+    .MuiListItemButton-root  {
+      display: flex;
+      color: ${theme.colors.alpha.trueWhite[70]};
+      background-color: transparent;
+      width: 100%;
+      justify-content: flex-start;
+      padding: ${theme.spacing(1, 1)};
+      &:hover {
+        background-color: ${alpha(theme.colors.alpha.trueWhite[100], 0.09)};
+        color: ${theme.colors.alpha.trueWhite[100]};
+    }  
 `
 );
 
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
 
+  const [open, setOpen] = useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   return (
     <>
       <MenuWrapper>
+        <SubMenuWrapper>
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="FACTURATION" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/factures"
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    Factures
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/reglements"
+                    startIcon={<MmsTwoToneIcon />}
+                  >
+                    Reglements
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/impaye"
+                    startIcon={<MmsTwoToneIcon />}
+                  >
+                    Impayé
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/cases"
+                    startIcon={<MmsTwoToneIcon />}
+                  >
+                    Recouvrements
+                  </Button>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </Collapse>
+        </SubMenuWrapper>
+
+        {/* ------------------------------- */}
         {/* the start of Our recouvrex  List */}
         <List
           component="div"
@@ -221,7 +317,7 @@ function SidebarMenu() {
                   to="/impaye"
                   startIcon={<MmsTwoToneIcon />}
                 >
-                 Impayé 
+                  Impayé
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -232,7 +328,7 @@ function SidebarMenu() {
                   to="/cases"
                   startIcon={<MmsTwoToneIcon />}
                 >
-                 Recouvrements
+                  Recouvrements
                 </Button>
               </ListItem>
             </List>
