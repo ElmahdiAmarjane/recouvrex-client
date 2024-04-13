@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 import WarningIcon from "@mui/icons-material/Warning";
 import CreateIcon from "@mui/icons-material/Create";
 // import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import InforCardWorning from "./infoCards/InforCardWorning";
+import StatusCard from "./infoCards/StatusCard";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ClearIcon from "@mui/icons-material/Clear";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -21,7 +21,7 @@ function PageHeader() {
     count: number;
   };
 
-  const [selectedStatusId, setSelectedStatusId] = useState();
+const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
 
   const [fetchedStatus, setFetchedStatus] = useState<StatusType[]>([]);
 
@@ -123,7 +123,7 @@ function PageHeader() {
     <Grid spacing={1} container justifyContent="center" alignItems="center">
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box >
-          <InforCardWorning
+          <StatusCard
             Icon={CreateIcon}
             IconColor="primary"
             text="Brouillon"
@@ -136,7 +136,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.pre_douteux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -148,7 +148,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.douteux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -161,7 +161,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.tres_douteux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -174,7 +174,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.pre_contentieux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -187,7 +187,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.contentieux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -201,7 +201,7 @@ function PageHeader() {
       {/* the secend row */}
       <Grid lg={4} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.comite_des_impayes.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -214,7 +214,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={4} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.comite_declassement_agence.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -227,7 +227,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.radie.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
@@ -240,7 +240,7 @@ function PageHeader() {
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
-          <InforCardWorning
+          <StatusCard
            id={status.termine.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}

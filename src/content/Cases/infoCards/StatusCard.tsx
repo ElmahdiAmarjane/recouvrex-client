@@ -7,8 +7,9 @@ import type { SxProps } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 import { SvgIconComponent } from "@mui/icons-material";
+import WarningIcon from "@mui/icons-material/Warning";
 
-export interface InforCardWorningProps {
+export interface StatusCardProps {
   sx?: SxProps;
   value?: number;
   id: number;
@@ -19,20 +20,20 @@ export interface InforCardWorningProps {
   IconColor?: string;
 }
 
-export default function InforCardWorning({
+export default function StatusCard({
   value,
   id,
   setSelectedStatusId,
   selectedStatusId,
   text,
-  Icon,
+  Icon = WarningIcon, // Provide WarningIcon as default
   IconColor,
   sx,
-}: InforCardWorningProps): React.JSX.Element {
+}: StatusCardProps): React.JSX.Element {
   return (
     <Box
       sx={{ m: 0.3,cursor: 'pointer' }}
-      onClick={(e) => {
+      onClick={() => {
         setSelectedStatusId(id);
         console.log(id);
       }}
