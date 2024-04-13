@@ -10,7 +10,7 @@ import { SvgIconComponent } from '@mui/icons-material';
 
 export interface InforCardWorningProps {
   sx?: SxProps;
-  value: string;
+  value?: number;
   text: string; // New prop for the text
   Icon?: SvgIconComponent; // New prop for the icon, optional if you want to keep WarningIcon as a default
   IconColor?:string;
