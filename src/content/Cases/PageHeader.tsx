@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import WarningIcon from "@mui/icons-material/Warning";
 import CreateIcon from "@mui/icons-material/Create";
 // import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
@@ -21,9 +21,12 @@ function PageHeader() {
     count: number;
   };
 
+  const [selectedStatusId, setSelectedStatusId] = useState();
+
   const [fetchedStatus, setFetchedStatus] = useState<StatusType[]>([]);
 
-  const [status, setStatus] = useState<Record<string, StatusType>>({    comite_des_impayes: {
+  const [status, setStatus] = useState<Record<string, StatusType>>({
+    comite_des_impayes: {
       id: 3,
       status: "Comité des impayés",
       count: 0,
@@ -80,14 +83,15 @@ function PageHeader() {
     },
   });
 
-
   useEffect(() => {
     if (fetchedStatus.length > 0) {
       const updatedStatus = { ...status };
 
       fetchedStatus.forEach((item) => {
-        const key = Object.keys(status).find((key) => status[key].id === item.id);
-        
+        const key = Object.keys(status).find(
+          (key) => status[key].id === item.id
+        );
+
         // console.log("key",key)
         if (key) {
           updatedStatus[key].count = item.count;
@@ -118,84 +122,134 @@ function PageHeader() {
   return (
     <Grid spacing={1} container justifyContent="center" alignItems="center">
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={CreateIcon}
-          IconColor="primary"
-          text="Brouillon"
-          value={status.brouillon.count}
-        />
+        <Box >
+          <InforCardWorning
+            Icon={CreateIcon}
+            IconColor="primary"
+            text="Brouillon"
+            value={status.brouillon.count}
+            id={status.brouillon.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={WarningIcon}
-          text="pre-douteux"
-          value={status.pre_douteux.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.pre_douteux.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={WarningIcon}
+            text="pre-douteux"
+            value={status.pre_douteux.count}
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={WarningIcon}
-          IconColor="skyblue"
-          text="Douteux"
-          value={status.douteux.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.douteux.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={WarningIcon}
+            IconColor="skyblue"
+            text="Douteux"
+            value={status.douteux.count}
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={WarningIcon}
-          IconColor="blue"
-          text="Tres douteux"
-          value={1} //this one is not dinamic yet
-        />
+        <Box>
+          <InforCardWorning
+           id={status.tres_douteux.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={WarningIcon}
+            IconColor="blue"
+            text="Tres douteux"
+            value={status.tres_douteux.count} //this one is not dinamic yet
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={WarningIcon}
-          IconColor="orange"
-          text="Pre-contentieux"
-          value={status.pre_contentieux.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.pre_contentieux.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={WarningIcon}
+            IconColor="orange"
+            text="Pre-contentieux"
+            value={status.pre_contentieux.count}
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={WarningIcon}
-          IconColor="red"
-          text="Contentieux"
-          value={status.contentieux.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.contentieux.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={WarningIcon}
+            IconColor="red"
+            text="Contentieux"
+            value={status.contentieux.count}
+          />
+        </Box>
       </Grid>
       {/* the secend row */}
       <Grid lg={4} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={GroupsIcon}
-          IconColor="orange"
-          text="Comite des impayes"
-          value={status.comite_des_impayes.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.comite_des_impayes.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={GroupsIcon}
+            IconColor="orange"
+            text="Comite des impayes"
+            value={status.comite_des_impayes.count}
+          />
+        </Box>
       </Grid>
       <Grid lg={4} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={GroupsIcon}
-          IconColor="red"
-          text="Comite declassement agence"
-          value={status.comite_declassement_agence.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.comite_declassement_agence.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={GroupsIcon}
+            IconColor="red"
+            text="Comite declassement agence"
+            value={status.comite_declassement_agence.count}
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={ClearIcon}
-          IconColor="primary"
-          text="Radié"
-          value={status.radie.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.radie.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={ClearIcon}
+            IconColor="primary"
+            text="Radié"
+            value={status.radie.count}
+          />
+        </Box>
       </Grid>
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <InforCardWorning
-          Icon={CheckBoxIcon}
-          IconColor="green"
-          text="Termine"
-          value={status.termine.count}
-        />
+        <Box>
+          <InforCardWorning
+           id={status.termine.id}
+            setSelectedStatusId={setSelectedStatusId}
+            selectedStatusId={selectedStatusId}
+            Icon={CheckBoxIcon}
+            IconColor="green"
+            text="Termine"
+            value={status.termine.count}
+          />
+        </Box>
       </Grid>
     </Grid>
   );
