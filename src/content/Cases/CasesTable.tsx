@@ -308,7 +308,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                   Ajouter
                 </Button>
 
-                <Tooltip arrow title="Rafraîchir">
+                <Tooltip arrow title="Réinitialiser">
                   <IconButton color="primary">
                     <AutorenewIcon />
                   </IconButton>

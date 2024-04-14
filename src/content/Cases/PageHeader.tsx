@@ -23,6 +23,17 @@ function PageHeader() {
 
 const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
 
+
+
+useEffect(() => {
+  if (selectedStatusId > 0) {
+    // fetch the cases based on the selected status id and the user id
+    
+  // update the existing cases
+
+  }
+}, [selectedStatusId]);
+
   const [fetchedStatus, setFetchedStatus] = useState<StatusType[]>([]);
 
   const [status, setStatus] = useState<Record<string, StatusType>>({

@@ -8,6 +8,7 @@ import CaseReferences from './caseReferences';
 import CaseTasks from './caseTasks';
 import CaseIntervenants from './caseIntervenants';
 import CaseNonPaidInvoices from './caseNonPaidInvoices';
+import CaseDossierContentieux from './caseDossierCntentieux';
 
   
 function Case() {
@@ -31,6 +32,9 @@ function Case() {
           alignItems="stretch"
           spacing={1}
         >
+          <Grid item xs={12}>
+           <CaseDossierContentieux/>
+          </Grid>
           <Grid item xs={12}lg={4.5}>
            <CaseReferences/>
           </Grid>
