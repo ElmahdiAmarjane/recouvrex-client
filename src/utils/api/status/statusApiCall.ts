@@ -5,7 +5,7 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export async function getStatuses() {
     try {
-      const response = await axios.get(`${apiUrl}/api/Status/countStatus/2`);
+      const response = await axios.get(`${apiUrl}/api/Status/countStatus/5`);
       return response.data;
     } catch (error) {
       console.error("Error fetching statuses:", error);

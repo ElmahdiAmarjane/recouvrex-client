@@ -1,19 +1,26 @@
 import { Card } from '@mui/material';
-import { Case } from 'src/models/case';
 import CasesTable from './CasesTable';
-// import { subDays } from 'date-fns';
+import { Case } from 'src/models/case';
 
 import { useEffect, useState } from 'react';
 import { getFilteredCasesByUser } from 'src/utils/api/case/caseApiCall';
 
-function ExistingCases() {
+interface ExistingCasesProps {
+  cases: Case[]; // Assuming Case is a type or interface representing a case
+  setCases: React.Dispatch<React.SetStateAction<Case[]>>; // This is a typical type for a setState function when using useState
+  updateSelectedStatusId:(id: number) =>void; 
+}
 
-  const [cases, setCases] = useState<Case[]>([]);
+function ExistingCases({cases, setCases,updateSelectedStatusId }:ExistingCasesProps) {
+
+  const [casesBackUp, setCasesBackUp] = useState<Case[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getFilteredCasesByUser("1");
+        const result = await getFilteredCasesByUser();
         setCases(result);
+        setCasesBackUp(result);
         console.log(result);
       } catch (error) {
         // Handle error
@@ -24,11 +31,16 @@ function ExistingCases() {
     fetchData();
   }, []);
 
+  function resetAllCases() {
+    console.log('reset all cases')
+    setCases(casesBackUp);
+  }
+
   
 
   return (
     <Card>
-     {cases&& <CasesTable cryptoOrders={cases} />}
+     {cases&& <CasesTable cryptoOrders={cases} updateSelectedStatusId={updateSelectedStatusId} resetAllCases={resetAllCases} />}
     </Card>
   );
 }

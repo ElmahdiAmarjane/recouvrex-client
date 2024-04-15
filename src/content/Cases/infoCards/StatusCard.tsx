@@ -11,7 +11,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 
 export interface StatusCardProps {
   sx?: SxProps;
-  value?: number;
+  value: number;
   id: number;
   setSelectedStatusId: (id: number) => void;
   selectedStatusId:number;
@@ -32,10 +32,12 @@ export default function StatusCard({
 }: StatusCardProps): React.JSX.Element {
   return (
     <Box
-      sx={{ m: 0.3,cursor: 'pointer' }}
+      sx={{ m: 0.3,cursor: value>0? 'pointer': 'not-allowed' }}
       onClick={() => {
-        setSelectedStatusId(id);
-        console.log(id);
+        if(value>0){
+          setSelectedStatusId(id);
+          console.log(id);
+        }
       }}
     >
       <Card sx={sx}>

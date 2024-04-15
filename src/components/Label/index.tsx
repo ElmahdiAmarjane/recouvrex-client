@@ -24,7 +24,7 @@ const LabelWrapper = styled('span')(
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      max-height: ${theme.spacing(3)};
+      // max-height: ${theme.spacing(3)};
       
       &.MuiLabel {
         &-primary {

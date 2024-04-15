@@ -6,9 +6,23 @@ import StatusCard from "./infoCards/StatusCard";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ClearIcon from "@mui/icons-material/Clear";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { getStatuses } from "src/utils/api/status/statusApiCall";
-function PageHeader() {
+import { getFilteredCasesByStatusId } from "src/utils/api/case/caseApiCall";
+import { Case } from "src/models/case";
+
+interface ExistingCasesProps {
+  cases: Case[]; // Assuming Case is a type or interface representing a case
+  setCases: React.Dispatch<React.SetStateAction<Case[]>>; // This is a typical type for a setState function when using useState
+}
+
+export interface PageHeaderHandles {
+  updateSelectedStatus: (id: number) => void;
+}
+
+// function PageHeader({ cases, setCases }: ExistingCasesProps, ref) {
+  const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
+    ({ cases, setCases }, ref) => {
   // const user = {
   //   name: 'Catherine Pike',
   //   avatar: '/static/images/avatars/1.jpg'
@@ -21,18 +35,37 @@ function PageHeader() {
     count: number;
   };
 
-const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
+  const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
 
+  // function updateSelectedStatusId(newStatusId:number) {
+  //   setSelectedStatusId(newStatusId);
+  // }
 
+  useImperativeHandle(ref, () => ({
+    updateSelectedStatus(newStatusId: number) {
+      setSelectedStatusId(newStatusId);
+    },
+  }));
 
-useEffect(() => {
-  if (selectedStatusId > 0) {
-    // fetch the cases based on the selected status id and the user id
-    
-  // update the existing cases
+  useEffect(() => {
+    if (selectedStatusId > 0) {
+      // fetch the cases based on the selected status id and the user id
+      const fetchData = async () => {
+        try {
+          const result = await getFilteredCasesByStatusId(selectedStatusId);
+          setCases(result);
+          console.log(result);
+        } catch (error) {
+          // Handle error
+          console.error("Error fetching cases for user by statusid", error);
+        }
+      };
 
-  }
-}, [selectedStatusId]);
+      fetchData();
+
+      // update the existing cases
+    }
+  }, [selectedStatusId]);
 
   const [fetchedStatus, setFetchedStatus] = useState<StatusType[]>([]);
 
@@ -48,12 +81,12 @@ useEffect(() => {
       count: 0,
     },
     pre_contentieux: {
-      id: 1,
+      id: 8,
       status: "Pré-contentieux",
       count: 0,
     },
     contentieux: {
-      id: 2,
+      id: 7,
       status: "Contentieux",
       count: 0,
     },
@@ -63,12 +96,12 @@ useEffect(() => {
       count: 0,
     },
     termine: {
-      id: 4,
+      id: 9,
       status: "Terminé",
       count: 0,
     },
     pre_douteux: {
-      id: 7,
+      id: 1,
       status: "Pré-douteux",
       count: 0,
     },
@@ -78,12 +111,12 @@ useEffect(() => {
       count: 0,
     },
     douteux: {
-      id: 8,
+      id: 2,
       status: "Douteux",
       count: 0,
     },
     comite_declassement_agence: {
-      id: 9,
+      id: 4,
       status: "Comité de déclassement agence",
       count: 0,
     },
@@ -133,7 +166,7 @@ useEffect(() => {
   return (
     <Grid spacing={1} container justifyContent="center" alignItems="center">
       <Grid lg={2} md={3} sm={6} xs={12}>
-        <Box >
+        <Box>
           <StatusCard
             Icon={CreateIcon}
             IconColor="primary"
@@ -148,7 +181,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.pre_douteux.id}
+            id={status.pre_douteux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={WarningIcon}
@@ -160,7 +193,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.douteux.id}
+            id={status.douteux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={WarningIcon}
@@ -173,7 +206,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.tres_douteux.id}
+            id={status.tres_douteux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={WarningIcon}
@@ -186,7 +219,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.pre_contentieux.id}
+            id={status.pre_contentieux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={WarningIcon}
@@ -199,7 +232,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.contentieux.id}
+            id={status.contentieux.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={WarningIcon}
@@ -213,7 +246,7 @@ useEffect(() => {
       <Grid lg={4} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.comite_des_impayes.id}
+            id={status.comite_des_impayes.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={GroupsIcon}
@@ -226,12 +259,12 @@ useEffect(() => {
       <Grid lg={4} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.comite_declassement_agence.id}
+            id={status.comite_declassement_agence.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={GroupsIcon}
             IconColor="red"
-            text="Comite declassement agence"
+            text="Comité de déclassement agence"
             value={status.comite_declassement_agence.count}
           />
         </Box>
@@ -239,7 +272,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.radie.id}
+            id={status.radie.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={ClearIcon}
@@ -252,7 +285,7 @@ useEffect(() => {
       <Grid lg={2} md={3} sm={6} xs={12}>
         <Box>
           <StatusCard
-           id={status.termine.id}
+            id={status.termine.id}
             setSelectedStatusId={setSelectedStatusId}
             selectedStatusId={selectedStatusId}
             Icon={CheckBoxIcon}
@@ -264,6 +297,6 @@ useEffect(() => {
       </Grid>
     </Grid>
   );
-}
+  })
 
 export default PageHeader;

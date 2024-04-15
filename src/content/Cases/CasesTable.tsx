@@ -43,6 +43,8 @@ import CasesSearch from "./CasesSearch";
 interface CasesTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
+  resetAllCases:() => void;
+  updateSelectedStatusId:(id:number) => void;
 }
 
 interface Filters {
@@ -147,7 +149,8 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
+// here it starts
+const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSelectedStatusId }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -309,8 +312,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                 </Button>
 
                 <Tooltip arrow title="Réinitialiser">
-                  <IconButton color="primary">
-                    <AutorenewIcon />
+                  <IconButton color="primary" onClick={()=>{updateSelectedStatusId(0);resetAllCases();}}>
+                    <AutorenewIcon   />
                   </IconButton>
                 </Tooltip>
               </Stack>
@@ -343,9 +346,9 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
               <TableCell>CONTRAT</TableCell>
               <TableCell>FACTURE</TableCell>
               <TableCell>MONTANT</TableCell>
-              <TableCell>FOURNISSEUR</TableCell>
+              {/* <TableCell>FOURNISSEUR</TableCell>
               <TableCell>TRANSPORTEUR</TableCell>
-              <TableCell>SCORE</TableCell>
+              <TableCell>SCORE</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -404,9 +407,8 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                     </Typography>
                   </TableCell>
                   {/* the colomn 4 */}
-                  <TableCell>
+                  <TableCell sx={{ maxWidth: "1200px",cursor:'pointer' }}  onClick={()=>{updateSelectedStatusId(cryptoOrder.status.id)}}>
                     {getStatusLabel(cryptoOrder.status.status)}
-                    {/* { (cryptoOrder?.status?.status)} */}
                   </TableCell>
 
                   {/* the colomn 5 */}
@@ -418,6 +420,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
+                      {cryptoOrder.thirdParty.title}{" "}
                       {cryptoOrder.thirdParty.firstName}{" "}
                       {cryptoOrder.thirdParty.lastName}
                     </Typography>
@@ -472,11 +475,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.montant} */}
+                      {cryptoOrder.totalAmount} DH
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
-                  <TableCell>
+                    {/* -------just commented */}
+                  {/* <TableCell>
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -484,12 +488,13 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.fournisseur} */}
+                      kkkkk{" "}
                     </Typography>
-                  </TableCell>
+                  </TableCell> */}
 
                   {/* deplicated from the above */}
-                  <TableCell>
+                  {/* -------just commented */}
+                  {/* <TableCell>
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -501,12 +506,13 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                         // empty cells
                       }
                     </Typography>
-                  </TableCell>
+                  </TableCell> */}
                   {/* the colomn 6 */}
                   {/* <TableCell>
                     {getStatusLabel(cryptoOrder.status)}
                   </TableCell> */}
-                  <TableCell>
+                  {/* -------just commented */}
+                  {/* <TableCell>
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -518,7 +524,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders }) => {
                         // empty cells
                       }
                     </Typography>
-                  </TableCell>
+                  </TableCell> */}
 
                   {/* this coloms will be commanted for now we donot use it I guess */}
                   {/* the colomn 7 the last one for edit and delete */}
