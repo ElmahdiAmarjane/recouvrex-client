@@ -30,6 +30,8 @@ const userId:number=5;
       throw new Error(`Failed to fetch data: ${error}`);
     }
   }
+
+  
   export async function getFilteredCasesByStatusId(statusId:number): Promise<Case[]> {
     try {
       // Make the GET request
@@ -37,6 +39,25 @@ const userId:number=5;
      
       console.log('filterd cases by user connected id and status id : ', statusId);
       console.log(response.data);
+      return response.data;
+    } catch (error) {
+      // Handle errors here if needed
+      throw new Error(`Failed to fetch data: ${error}`);
+    }
+  }
+
+  export async function getFilteredCasesByKeyWord(keyword:string,statusId:number|string): Promise<Case[]> {
+    try {
+      if(statusId==0){
+        statusId ="";
+      }
+      // Make the GET request
+      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filterOne/?userConnectedId=${userId}&searchText=${keyword}&statusId=${statusId}`);
+      // case/filterOne/?userConnectedId=2&searchText=radi
+      console.log('filterd cases searching key word : ', keyword);
+      console.log('----searchCasesByKeyWord')
+      console.log(response.data);
+      console.log('--------------------');
       return response.data;
     } catch (error) {
       // Handle errors here if needed

@@ -14,6 +14,8 @@ import { Case } from "src/models/case";
 interface ExistingCasesProps {
   cases: Case[]; // Assuming Case is a type or interface representing a case
   setCases: React.Dispatch<React.SetStateAction<Case[]>>; // This is a typical type for a setState function when using useState
+  selectedStatusId:number;
+   setSelectedStatusId:React.Dispatch<React.SetStateAction<Case[]>>;
 }
 
 export interface PageHeaderHandles {
@@ -22,7 +24,7 @@ export interface PageHeaderHandles {
 
 // function PageHeader({ cases, setCases }: ExistingCasesProps, ref) {
   const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
-    ({ cases, setCases }, ref) => {
+    ({ cases, setCases ,selectedStatusId, setSelectedStatusId}, ref) => {
   // const user = {
   //   name: 'Catherine Pike',
   //   avatar: '/static/images/avatars/1.jpg'
@@ -35,7 +37,9 @@ export interface PageHeaderHandles {
     count: number;
   };
 
-  const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
+  // const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
+
+ 
 
   // function updateSelectedStatusId(newStatusId:number) {
   //   setSelectedStatusId(newStatusId);
@@ -68,6 +72,8 @@ export interface PageHeaderHandles {
   }, [selectedStatusId]);
 
   const [fetchedStatus, setFetchedStatus] = useState<StatusType[]>([]);
+
+  
 
   const [status, setStatus] = useState<Record<string, StatusType>>({
     comite_des_impayes: {

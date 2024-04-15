@@ -45,6 +45,7 @@ interface CasesTableProps {
   cryptoOrders: CryptoOrder[];
   resetAllCases:() => void;
   updateSelectedStatusId:(id:number) => void;
+  searchCasesByKeyWord:(keyword:string) => void;
 }
 
 interface Filters {
@@ -150,7 +151,7 @@ const applyPagination = (
 };
 
 // here it starts
-const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSelectedStatusId }) => {
+const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSelectedStatusId,searchCasesByKeyWord }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -291,7 +292,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSele
               <Typography variant="h3" sx={{ mt: 1, ml: 1 }}>
                 Recouvrements
               </Typography>
-              <CasesSearch />
+              <CasesSearch searchCasesByKeyWord={searchCasesByKeyWord}/>
             </Grid>
             <Grid item>
               <Stack

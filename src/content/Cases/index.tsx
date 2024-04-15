@@ -10,6 +10,7 @@ import { Case } from 'src/models/case';
 
 function Cases() {
   const [cases, setCases] = useState<Case[]>([]);
+  const [selectedStatusId, setSelectedStatusId] = useState<number>(0);
 
   const PageHeaderRef = useRef<PageHeaderHandles>(null);
 
@@ -21,6 +22,8 @@ function Cases() {
          PageHeaderRef.current.updateSelectedStatus(id);
       }
     }
+
+    
   
 
   return (
@@ -29,7 +32,7 @@ function Cases() {
         <title>Transactions - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader ref={PageHeaderRef} cases={cases} setCases={setCases} />
+        <PageHeader ref={PageHeaderRef} cases={cases} setCases={setCases} selectedStatusId={selectedStatusId} setSelectedStatusId={setSelectedStatusId} />
       </PageTitleWrapper>
       <Container maxWidth="xl">
         <Grid
@@ -40,7 +43,7 @@ function Cases() {
           spacing={1}
         >
           <Grid item xs={12}>
-            <ExistingCases updateSelectedStatusId={updateSelectedStatusId} cases={cases} setCases={setCases} />
+            <ExistingCases updateSelectedStatusId={updateSelectedStatusId} cases={cases} setCases={setCases} selectedStatusId={selectedStatusId}  />
           </Grid>
         </Grid>
       </Container>

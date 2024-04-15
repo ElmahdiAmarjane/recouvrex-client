@@ -1,9 +1,23 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, Tooltip } from "@mui/material";
-export default function CasesSearch() {
+import { useState, FC } from "react";
+
+
+
+// import { FC } from 'react';
+
+interface CasesSearchProps {
+  searchCasesByKeyWord: (keyword: string) => void;
+}
+
+const CasesSearch: FC<CasesSearchProps> = ({ searchCasesByKeyWord }) => {
+  // Component implementation goes
+
+// export default const CasesSearch: FC<CasesSearchProps> =({searchCasesByKeyWord}) {
+
+  const [searchkeyWord, setSearchkeyWord] = useState<string>("");
   return (
     <Box
     sx={{
@@ -17,6 +31,8 @@ export default function CasesSearch() {
     }}
   >
     <TextField 
+      onChange={(e)=>{setSearchkeyWord(e.target.value)}}
+      value={searchkeyWord}
       size="small"
       fullWidth 
       placeholder='Tapez pour filtrer ou appuyez sur Entrée pour rechercher la base de données' 
@@ -27,7 +43,7 @@ export default function CasesSearch() {
     <Box > {/* Padding for the Box containing the SearchIcon */}
      
       <Tooltip arrow title="Search">
-        <IconButton color="primary" >
+        <IconButton color="primary" onClick={()=>{searchCasesByKeyWord(searchkeyWord)}} >
         <SearchIcon color="secondary"/>
         </IconButton>
       </Tooltip>
@@ -46,3 +62,5 @@ export default function CasesSearch() {
   </Box>
   );
 }
+
+export default CasesSearch;

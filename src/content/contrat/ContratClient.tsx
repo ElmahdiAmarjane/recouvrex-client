@@ -1,4 +1,6 @@
 import { Card, Divider, Grid, Link, Typography } from "@mui/material";
+import CallIcon from "@mui/icons-material/Call"; // icon for Appel
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function ContratClient() {
   return (
@@ -60,15 +62,15 @@ export default function ContratClient() {
           Mobile de souscription*
           </Typography>
           <Typography variant="body1" sx={{ mt: 1, ml: 2 }}>
-          0636525874
+          <CallIcon  sx={{fontSize:15}} /> 0636525874
           </Typography>
         </Grid>
         <Grid item sm={6}>
           <Typography variant="h4" sx={{ ml: 2 }}>
-            ID procedure
+          Langue préférée
           </Typography>
           <Typography variant="body1" sx={{ mt: 1, ml: 2 }}>
-            COL00000062
+            Arabe
           </Typography>
         </Grid>
       </Grid>
@@ -81,10 +83,10 @@ export default function ContratClient() {
 
         <Grid item sm={12}>
           <Typography variant="h4" sx={{ ml: 2 }}>
-            ID procedure
+          Adresse
           </Typography>
           <Typography variant="body1" sx={{ mt: 1, ml: 2 }}>
-            COL00000062
+          <LocationOnIcon sx={{fontSize:15}} />58 rue finacle tab 11000 SALE
           </Typography>
         </Grid>
 
