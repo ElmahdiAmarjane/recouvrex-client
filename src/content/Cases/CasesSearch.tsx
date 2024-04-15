@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
-import ExelIcon from "./ExelIcon";
 import { IconButton, Tooltip } from "@mui/material";
 export default function CasesSearch() {
   return (
@@ -39,7 +38,8 @@ export default function CasesSearch() {
 
       <Tooltip arrow title="Exel">
         <IconButton color="primary" >
-        <ExelIcon />
+        <img src="/exel-icon.png"   width="20pt"
+        height="25pt" alt="img" />
         </IconButton>
       </Tooltip>
     </Box>

@@ -81,7 +81,7 @@ export interface PageHeaderHandles {
       count: 0,
     },
     pre_contentieux: {
-      id: 8,
+      id: 6,
       status: "Pré-contentieux",
       count: 0,
     },
@@ -91,7 +91,7 @@ export interface PageHeaderHandles {
       count: 0,
     },
     saisie_conservation_immobiliere_initiee: {
-      id: 6,
+      id: 8,
       status: "Saisie conservation immobilière initiée",
       count: 0,
     },
