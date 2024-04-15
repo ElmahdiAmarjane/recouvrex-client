@@ -11,8 +11,9 @@ import {
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-
-
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import ScannerIcon from '@mui/icons-material/Scanner';
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 
 interface ContratHeaderProps {
   contratId: string;
@@ -97,36 +98,40 @@ function ContratHeader({ contratId }: ContratHeaderProps) {
       <Grid item xs={12}  >
       <Button
       sx={{mr:0.5}}
+      size="small"
         variant="contained"
         color="primary"
-        startIcon={<CalendarMonthIcon />}
+        startIcon={<FilePresentIcon />}
       >
         Documents à télécharger
       </Button>
 
       <Button
       sx={{mr:0.5}}
+      size="small"
         variant="contained"
         color="primary"
-        startIcon={<CalendarMonthIcon />}
+        startIcon={<FilePresentIcon />}
       >
         Documents internes
       </Button>
 
       <Button
       sx={{mr:0.5}}
+      size="small"
         variant="contained"
         color="primary"
-        startIcon={<CalendarMonthIcon />}
+        startIcon={<AttachFileIcon />}
       >
         Pièces garant
       </Button>
 
       <Button
       sx={{mr:0.5}}
+      size="small"
         variant="contained"
         color="primary"
-        startIcon={<CalendarMonthIcon />} // Replace with the actual icon you need
+        startIcon={<ScannerIcon />} // Replace with the actual icon you need
       >
         Documents scannés
       </Button>
