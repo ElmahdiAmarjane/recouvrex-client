@@ -45,7 +45,7 @@ export default function ReferencesTable() {
                 </Link>
               </TableCell>
               <TableCell align="left">
-                <Link href={`/case`} rel="noopener noreferrer">
+                <Link href={`/contrat/${row.contrat}`} rel="noopener noreferrer">
                   {row.contrat}
                 </Link>
               </TableCell>
