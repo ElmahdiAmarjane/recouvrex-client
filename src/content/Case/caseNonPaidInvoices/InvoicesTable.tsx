@@ -1,4 +1,3 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,23 +5,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, IconButton, Link, Tooltip, Typography, useTheme } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import {
+  Button,
+  IconButton,
+  Link,
+  Tooltip,
+  useTheme,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-import { makeStyles } from '@mui/styles';
-
-const useStyles = makeStyles({
-    container: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      textTransform: 'lowercase',
-       // Align items vertically in the center
- // Adjust the space between icon and text
-    },
-  });
-
 
 function createData(
   personne: string,
@@ -37,7 +29,6 @@ const rows = [createData("IND00000553", "MICOC000368", "0000149", "00000720")];
 
 export default function InvoicesTable() {
   const theme = useTheme();
-  const classes = useStyles();
 
   return (
     <TableContainer component={Paper}>
@@ -48,13 +39,10 @@ export default function InvoicesTable() {
             <TableCell align="left">MONTANT</TableCell>
             <TableCell align="left">DATE DE IMPAYÉ</TableCell>
             <TableCell align="left">DATE DE PAIEMENT</TableCell>
-            <TableCell align="right" sx={{ color: "green" }} >
-            <Box className={classes.container}>
-              <AddIcon  fontSize="small" />
-              <Typography variant="body2">
-                ajouter
-              </Typography>
-              </Box>
+            <TableCell align="right">
+              <Button size="small" sx={{color:"green"}} startIcon={<AddIcon />} variant="text">
+                Ajouter
+              </Button>
             </TableCell>
           </TableRow>
         </TableHead>
