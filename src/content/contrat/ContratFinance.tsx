@@ -9,10 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BasicBars from "./BasicBars";
 
 export default function ContratFinance() {
-
-    
   const projects = [
     { label: "COLO00000057" },
     "COLO00000058",
@@ -39,83 +38,93 @@ export default function ContratFinance() {
           <Grid container xs={12} sm={6}>
             {/* --------- */}
             <Grid item xs={12} sm={6}>
-            <Autocomplete
-                size="small"
+              <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={projects}
-                sx={{ p: 0.5 }}
+                sx={{ m: 0.9 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Projet" id="project" />
+                  <TextField {...params} label="Produit financier*" id="project" />
                 )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <Autocomplete
-                size="small"
+              <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={projects}
-                 sx={{ p: 0.5 }}
+                sx={{ m: 0.9 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Projet" id="project" />
+                  <TextField {...params} label="Type de demande*" id="project" />
                 )}
               />
             </Grid>
+            {/* -------------------t2-------------------- */}
             <Grid item xs={6}>
-            <TextField
-             sx={{ p: 0.5 }}
-                size="small"
-                id="start-date"
-                label="Début"
-                type="datetime-local"
-                defaultValue="2017-05-24T10:30"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                 fullWidth
-              />
+              <Box sx={{ m: 0.9 }}>
+                <TextField
+                  id="start-date"
+                  label="Montant financier*"
+                  type="text"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Box>
             </Grid>
             <Grid item xs={12} sm={6}>
               {/* faileds item empty to gard the form */}
             </Grid>
+            {/* -------------------t3-------------------- */}
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ m: 0.9 }}>
+                <TextField
+                  id="start-date"
+                  label="Date de Début"
+                  type="datetime-local"
+                  // defaultValue="2017-05-24T10:30"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ m: 0.9 }}>
+                <TextField
+                  id="start-date"
+                  label="Premiere date de paiement "
+                  type="datetime-local"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Box>
+            </Grid>
+    {/* -------------------t4-------------------- */}
 
-            <Grid item xs={12} sm={6}>
-            <TextField
-             sx={{ p: 0.5 }}
-                size="small"
-                id="start-date"
-                label="Début"
-                type="datetime-local"
-                defaultValue="2017-05-24T10:30"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                 fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-               <TextField
-             sx={{ p: 0.5 }}
-                size="small"
-                id="start-date"
-                label="Début"
-                type="datetime-local"
-                defaultValue="2017-05-24T10:30"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                 fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Box textAlign={"right"}>faileds item</Box>
+            <Grid item xs={6}></Grid>
+            <Grid item xs={6}>
+              <Box sx={{ m: 0.5 }} textAlign={"right"}>
+                <TextField
+                  id="start-date"
+                  label="Terme*"
+                  type="text"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Box>
             </Grid>
             {/* --------- */}
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            chart
+            {/* <BasicBars/> */}chart
           </Grid>
         </Grid>
         {/* --------------------------------------------------- */}
