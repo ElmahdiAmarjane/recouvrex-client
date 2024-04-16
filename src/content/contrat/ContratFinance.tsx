@@ -124,7 +124,7 @@ export default function ContratFinance() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            {/* <BasicBars/> */}chart
+            <BasicBars/>
           </Grid>
         </Grid>
         {/* --------------------------------------------------- */}
