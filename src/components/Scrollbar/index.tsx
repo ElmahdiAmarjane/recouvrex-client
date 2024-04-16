@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import { Box, useTheme } from '@mui/material';

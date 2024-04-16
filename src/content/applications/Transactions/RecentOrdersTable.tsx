@@ -1,7 +1,7 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,

@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
