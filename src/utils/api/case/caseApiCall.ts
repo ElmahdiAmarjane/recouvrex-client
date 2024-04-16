@@ -52,7 +52,7 @@ const userId:number=5;
         statusId ="";
       }
       // Make the GET request
-      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filterOne/?userConnectedId=${userId}&searchText=${keyword}&statusId=${statusId}`);
+      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filterOne/?userConnectedId=${userId}&searchText=${keyword.trim()}&statusId=${statusId}`);
       // case/filterOne/?userConnectedId=2&searchText=radi
       console.log('filterd cases searching key word : ', keyword);
       console.log('----searchCasesByKeyWord')
@@ -61,6 +61,8 @@ const userId:number=5;
       return response.data;
     } catch (error) {
       // Handle errors here if needed
+      console.log(`filterd cases searching key word : "${keyword.trim()}"`);
+
       throw new Error(`Failed to fetch data: ${error}`);
     }
   }

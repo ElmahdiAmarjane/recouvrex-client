@@ -39,7 +39,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-
+import KeyboardArrowRightSharpIcon from '@mui/icons-material/KeyboardArrowRightSharp';
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
@@ -220,7 +220,7 @@ function SidebarMenu() {
               <InboxIcon />
             </ListItemIcon>
             <ListItemText primary="FACTURATION" />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            {open ? <ExpandMore />:<KeyboardArrowRightSharpIcon />}
           </ListItemButton>
 
           <Collapse in={open} timeout="auto" unmountOnExit>

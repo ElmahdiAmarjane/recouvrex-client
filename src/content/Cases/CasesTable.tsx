@@ -43,9 +43,12 @@ import CasesSearch from "./CasesSearch";
 interface CasesTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
-  resetAllCases:() => void;
-  updateSelectedStatusId:(id:number) => void;
-  searchCasesByKeyWord:(keyword:string) => void;
+  resetAllCases: () => void;
+  updateSelectedStatusId: (id: number) => void;
+  searchCasesByKeyWord: (keyword: string) => void;
+
+  searchkeyWord: string;
+  setSearchkeyWord: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface Filters {
@@ -151,7 +154,14 @@ const applyPagination = (
 };
 
 // here it starts
-const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSelectedStatusId,searchCasesByKeyWord }) => {
+const CasesTable: FC<CasesTableProps> = ({
+  cryptoOrders,
+  resetAllCases,
+  updateSelectedStatusId,
+  searchCasesByKeyWord,
+  searchkeyWord,
+  setSearchkeyWord,
+}) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -220,15 +230,6 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSele
     }
   };
 
-  const formatNumberWithPrefix = (number, prefix = "COL", totalLength = 9) => {
-    // Calculate how many zeros we need to add after the prefix
-    const zerosNeeded = totalLength - prefix.length - number.toString().length;
-    // Create a string with the required zeros
-    const zeros = "0".repeat(zerosNeeded);
-    // Return the formatted string
-    return `${prefix}${zeros}${number}`;
-  };
-
   const handlePageChange = (event: any, newPage: number): void => {
     setPage(newPage);
   };
@@ -292,7 +293,11 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSele
               <Typography variant="h3" sx={{ mt: 1, ml: 1 }}>
                 Recouvrements
               </Typography>
-              <CasesSearch searchCasesByKeyWord={searchCasesByKeyWord}/>
+              <CasesSearch
+                searchCasesByKeyWord={searchCasesByKeyWord}
+                searchkeyWord={searchkeyWord}
+                setSearchkeyWord={setSearchkeyWord}
+              />
             </Grid>
             <Grid item>
               <Stack
@@ -313,8 +318,14 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSele
                 </Button>
 
                 <Tooltip arrow title="Réinitialiser">
-                  <IconButton color="primary" onClick={()=>{updateSelectedStatusId(0);resetAllCases();}}>
-                    <AutorenewIcon   />
+                  <IconButton
+                    color="primary"
+                    onClick={() => {
+                      updateSelectedStatusId(0);
+                      resetAllCases();
+                    }}
+                  >
+                    <AutorenewIcon />
                   </IconButton>
                 </Tooltip>
               </Stack>
@@ -408,7 +419,12 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSele
                     </Typography>
                   </TableCell>
                   {/* the colomn 4 */}
-                  <TableCell sx={{ maxWidth: "1200px",cursor:'pointer' }}  onClick={()=>{updateSelectedStatusId(cryptoOrder.status.id)}}>
+                  <TableCell
+                    sx={{ maxWidth: "1200px", cursor: "pointer" }}
+                    onClick={() => {
+                      updateSelectedStatusId(cryptoOrder.status.id);
+                    }}
+                  >
                     {getStatusLabel(cryptoOrder.status.status)}
                   </TableCell>
 
@@ -480,7 +496,7 @@ const CasesTable: FC<CasesTableProps> = ({ cryptoOrders,resetAllCases,updateSele
                     </Typography>
                   </TableCell>
                   {/* deplicated from the above */}
-                    {/* -------just commented */}
+                  {/* -------just commented */}
                   {/* <TableCell>
                     <Typography
                       variant="body1"

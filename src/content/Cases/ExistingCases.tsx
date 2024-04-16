@@ -1,19 +1,30 @@
-import { Card } from '@mui/material';
-import CasesTable from './CasesTable';
-import { Case } from 'src/models/case';
+import { Card } from "@mui/material";
+import CasesTable from "./CasesTable";
+import { Case } from "src/models/case";
 
-import { useEffect, useState } from 'react';
-import { getFilteredCasesByKeyWord, getFilteredCasesByUser } from 'src/utils/api/case/caseApiCall';
+import { useEffect, useState } from "react";
+import {
+  getFilteredCasesByKeyWord,
+  getFilteredCasesByUser,
+} from "src/utils/api/case/caseApiCall";
 
 interface ExistingCasesProps {
   cases: Case[]; // Assuming Case is a type or interface representing a case
   setCases: React.Dispatch<React.SetStateAction<Case[]>>; // This is a typical type for a setState function when using useState
-  updateSelectedStatusId:(id: number) =>void; 
-  selectedStatusId:number;
+  updateSelectedStatusId: (id: number) => void;
+  selectedStatusId: number;
+  searchkeyWord: string;
+  setSearchkeyWord: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function ExistingCases({cases, setCases,updateSelectedStatusId,selectedStatusId }:ExistingCasesProps) {
-
+function ExistingCases({
+  cases,
+  setCases,
+  updateSelectedStatusId,
+  selectedStatusId,
+  searchkeyWord,
+  setSearchkeyWord,
+}: ExistingCasesProps) {
   const [casesBackUp, setCasesBackUp] = useState<Case[]>([]);
 
   useEffect(() => {
@@ -25,7 +36,7 @@ function ExistingCases({cases, setCases,updateSelectedStatusId,selectedStatusId 
         console.log(result);
       } catch (error) {
         // Handle error
-        console.error('Error fetching cases for user by userId:', error);
+        console.error("Error fetching cases for user by userId:", error);
       }
     };
 
@@ -33,29 +44,34 @@ function ExistingCases({cases, setCases,updateSelectedStatusId,selectedStatusId 
   }, []);
 
   function resetAllCases() {
-    console.log('reset all cases')
+    console.log("reset all cases");
     setCases(casesBackUp);
   }
 
-  async function searchCasesByKeyWord(keyword:string){
+  async function searchCasesByKeyWord(keyword: string) {
     try {
-
-      const result = await getFilteredCasesByKeyWord(keyword,selectedStatusId);
-      console.log('searchCasesByKeyWord')
+      const result = await getFilteredCasesByKeyWord(keyword, selectedStatusId);
+      console.log("searchCasesByKeyWord");
       setCases(result);
       console.log(result);
     } catch (error) {
       // Handle error
-      console.error('Error fetching cases by keyword:', error);
+      console.error("Error fetching cases by keyword:", error);
     }
-
   }
-
-  
 
   return (
     <Card>
-     {cases&& <CasesTable searchCasesByKeyWord={searchCasesByKeyWord} cryptoOrders={cases} updateSelectedStatusId={updateSelectedStatusId} resetAllCases={resetAllCases} />}
+      {cases && (
+        <CasesTable
+          searchCasesByKeyWord={searchCasesByKeyWord}
+          cryptoOrders={cases}
+          updateSelectedStatusId={updateSelectedStatusId}
+          resetAllCases={resetAllCases}
+          searchkeyWord={searchkeyWord}
+          setSearchkeyWord={setSearchkeyWord}
+        />
+      )}
     </Card>
   );
 }
