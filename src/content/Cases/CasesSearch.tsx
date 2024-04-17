@@ -3,16 +3,20 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, Tooltip } from "@mui/material";
 import { FC } from "react";
+import { Case } from "src/models/case";
+import { downloadExcel } from "src/utils/download/case/caseDownload";
 
 // import { FC } from 'react';
 
 interface CasesSearchProps {
+  cases:Case[],
   searchCasesByKeyWord: (keyword: string) => void;
   searchkeyWord: string;
   setSearchkeyWord: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const CasesSearch: FC<CasesSearchProps> = ({
+  cases,
   searchCasesByKeyWord,
   searchkeyWord,
   setSearchkeyWord,
@@ -62,7 +66,7 @@ const CasesSearch: FC<CasesSearchProps> = ({
         {" "}
         {/* Padding for the Box containing the SearchIcon */}
         <Tooltip arrow title="Exel">
-          <IconButton color="primary">
+          <IconButton onClick={()=>{downloadExcel(cases)}} color="primary">
             <img src="/exel-icon.png" width="20pt" height="25pt" alt="img" />
           </IconButton>
         </Tooltip>

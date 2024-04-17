@@ -182,6 +182,7 @@ const CasesTable: FC<CasesTableProps> = ({
                 Recouvrements
               </Typography>
               <CasesSearch
+              cases={cases}
                 searchCasesByKeyWord={searchCasesByKeyWord}
                 searchkeyWord={searchkeyWord}
                 setSearchkeyWord={setSearchkeyWord}
@@ -319,7 +320,9 @@ const CasesTable: FC<CasesTableProps> = ({
                         color="text.primary"
                         gutterBottom
                         noWrap
-                      ></Typography>
+                      >
+                        {/* {caseItem.con} */}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography

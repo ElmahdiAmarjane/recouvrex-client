@@ -4,7 +4,7 @@ Please note to install the dependencies run the command :
 
 ```js
 
-npm install --legacy-peer-deps
+npm install 
 
 ```
 
