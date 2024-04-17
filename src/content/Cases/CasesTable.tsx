@@ -23,14 +23,14 @@ import {
 } from "@mui/material";
 
 import Label from "src/components/Label";
-import { CryptoOrder, CryptoOrderStatus } from "src/models/crypto_order";
 import { Case, CaseStatus } from "src/models/case";
 import BulkActions from "./BulkActions";
 import CasesSearch from "./CasesSearch";
 
 interface CasesTableProps {
   className?: string;
-  cryptoOrders: CryptoOrder[];
+  // cryptoOrders: Case[];
+  cryptoOrders: Case[];
   resetAllCases: () => void;
   updateSelectedStatusId: (id: number) => void;
   searchCasesByKeyWord: (keyword: string) => void;
@@ -40,12 +40,10 @@ interface CasesTableProps {
 }
 
 interface Filters {
-  status?: CryptoOrderStatus;
+  status?: CaseStatus;
 }
 
 const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
- 
-
   console.log(caseStatus + "\n");
 
   const caseStatusMap = {
@@ -100,19 +98,28 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
     },
   };
 
-  const { text, color }: any = caseStatusMap[caseStatus];
+  interface TextColor {
+    text: string;
+    color:string
+      | "primary"
+      | "black"
+      | "secondary"
+      | "error"
+      | "warning"
+      | "success"
+      | "info";
+  }
+
+  const { text, color }: TextColor = caseStatusMap[caseStatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
-const applyFilters = (
-  cryptoOrders: CryptoOrder[],
-  filters: Filters
-): CryptoOrder[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
+const applyFilters = (cases: Case[], filters: Filters): Case[] => {
+  return cases.filter((caseItem) => {
     let matches = true;
 
-    if (filters.status && cryptoOrder.status !== filters.status) {
+    if (filters.status && caseItem.status.status !== filters.status) {
       matches = false;
     }
 
@@ -137,18 +144,17 @@ const CasesTable: FC<CasesTableProps> = ({
   searchkeyWord,
   setSearchkeyWord,
 }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
-    []
-  );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedCases, setSelectedCases] = useState<string[]>([]);
+  const selectedBulkActions = selectedCases.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filters, setFilters] = useState<Filters>({
-    status: null,
+    // status: null,
   });
 
-
-  const handlePageChange = (event: any, newPage: number): void => {
+  const handlePageChange = (event: unknown, newPage: number): void => {
     setPage(newPage);
   };
 
@@ -156,18 +162,8 @@ const CasesTable: FC<CasesTableProps> = ({
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
-    page,
-    limit
-  );
-  // const selectedSomeCryptoOrders =
-  //   selectedCryptoOrders.length > 0 &&
-  //   selectedCryptoOrders.length < cryptoOrders.length;
-  // const selectedAllCryptoOrders =
-  //   selectedCryptoOrders.length === cryptoOrders.length;
-  // // const theme = useTheme();
+  const filteredCases = applyFilters(cryptoOrders, filters);
+  const paginatedCases = applyPagination(filteredCases, page, limit);
 
   return (
     <Card>
@@ -178,12 +174,7 @@ const CasesTable: FC<CasesTableProps> = ({
       )}
       {!selectedBulkActions && (
         <>
-        
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
               <Typography variant="h3" sx={{ mt: 1, ml: 1 }}>
                 Recouvrements
@@ -226,7 +217,6 @@ const CasesTable: FC<CasesTableProps> = ({
               </Stack>
             </Grid>
           </Grid>
-        
         </>
       )}
       <Divider />
@@ -245,16 +235,10 @@ const CasesTable: FC<CasesTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.identifiant
-              );
+            {paginatedCases.map((caseItem) => {
+              const isCaseSelected = selectedCases.includes(caseItem.id);
               return (
-                <TableRow
-                  hover
-                  key={cryptoOrder.identifiant}
-                  selected={isCryptoOrderSelected}
-                >
+                <TableRow hover key={caseItem.id} selected={isCaseSelected}>
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -264,10 +248,10 @@ const CasesTable: FC<CasesTableProps> = ({
                       noWrap
                     >
                       <Link
-                        href={`/case/${cryptoOrder.caseId}`}
+                        href={`/case/${caseItem.caseId}`}
                         rel="noopener noreferrer"
                       >
-                        {cryptoOrder.caseId}
+                        {caseItem.caseId}
                       </Link>
                     </Typography>
                   </TableCell>
@@ -279,16 +263,16 @@ const CasesTable: FC<CasesTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.startDate}
+                      {caseItem.startDate}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{ maxWidth: "1200px", cursor: "pointer" }}
                     onClick={() => {
-                      updateSelectedStatusId(cryptoOrder.status.id);
+                      updateSelectedStatusId(caseItem.status.id);
                     }}
                   >
-                    {getStatusLabel(cryptoOrder.status.status)}
+                    {getStatusLabel(caseItem.status.status)}
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -298,21 +282,9 @@ const CasesTable: FC<CasesTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.thirdParty.title}{" "}
-                      {cryptoOrder.thirdParty.firstName}{" "}
-                      {cryptoOrder.thirdParty.lastName}
-                    </Typography>
-                   
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.thirdParty.tiersType}
+                      {caseItem.thirdParty.title}{" "}
+                      {caseItem.thirdParty.firstName}{" "}
+                      {caseItem.thirdParty.lastName}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -323,6 +295,7 @@ const CasesTable: FC<CasesTableProps> = ({
                       gutterBottom
                       noWrap
                     >
+                      {caseItem.thirdParty.tiersType}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -332,8 +305,16 @@ const CasesTable: FC<CasesTableProps> = ({
                       color="text.primary"
                       gutterBottom
                       noWrap
-                    >
-                    </Typography>
+                    ></Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    ></Typography>
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -343,7 +324,7 @@ const CasesTable: FC<CasesTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.totalAmount} DH
+                      {caseItem.totalAmount} DH
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -355,7 +336,7 @@ const CasesTable: FC<CasesTableProps> = ({
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={filteredCases.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

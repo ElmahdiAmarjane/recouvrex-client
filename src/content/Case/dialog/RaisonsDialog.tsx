@@ -117,6 +117,7 @@ export default function RaisonsDialog() {
                   value={raison.value}
                   control={<Radio />}
                   label={raison.label}
+                  key={raison.id}
                 />
               ))}
             </RadioGroup>

@@ -4,8 +4,8 @@ import * as PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 
 interface LabelProps {
-  className?: string;
-  color?:
+  // className?: string;
+  color?:string
     | 'primary'
     | 'black'
     | 'secondary'
@@ -67,7 +67,7 @@ const LabelWrapper = styled('span')(
 );
 
 const Label: FC<LabelProps> = ({
-  className,
+  // className,
   color = 'secondary',
   children,
   ...rest
@@ -81,7 +81,7 @@ const Label: FC<LabelProps> = ({
 
 Label.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
+  // className: PropTypes.string,
   color: PropTypes.oneOf([
     'primary',
     'black',
