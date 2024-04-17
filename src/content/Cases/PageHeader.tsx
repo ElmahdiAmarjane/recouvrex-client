@@ -180,7 +180,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
 
     return (
       <Grid spacing={1} container justifyContent="center" alignItems="center">
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               Icon={CreateIcon}
@@ -193,7 +193,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.pre_douteux.id}
@@ -205,7 +205,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.douteux.id}
@@ -218,7 +218,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.tres_douteux.id}
@@ -231,7 +231,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.pre_contentieux.id}
@@ -244,7 +244,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.contentieux.id}
@@ -258,7 +258,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
           </Box>
         </Grid>
         {/* the secend row */}
-        <Grid lg={4} sm={6} xs={12}>
+        <Grid item lg={4} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.comite_des_impayes.id}
@@ -271,7 +271,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={4} sm={6} xs={12}>
+        <Grid item lg={4} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.comite_declassement_agence.id}
@@ -284,7 +284,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.radie.id}
@@ -297,7 +297,7 @@ const PageHeader = forwardRef<PageHeaderHandles, ExistingCasesProps>(
             />
           </Box>
         </Grid>
-        <Grid lg={2} md={3} sm={6} xs={12}>
+        <Grid item lg={2} md={3} sm={6} xs={12}>
           <Box>
             <StatusCard
               id={status.termine.id}

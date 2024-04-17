@@ -49,6 +49,7 @@ function ExistingCases({
   }
 
   async function searchCasesByKeyWord(keyword: string) {
+    setCases([]);
     try {
       const result = await getFilteredCasesByKeyWord(keyword, selectedStatusId);
       console.log("searchCasesByKeyWord");
@@ -65,7 +66,7 @@ function ExistingCases({
       {cases && (
         <CasesTable
           searchCasesByKeyWord={searchCasesByKeyWord}
-          cryptoOrders={cases}
+          cases={cases}
           updateSelectedStatusId={updateSelectedStatusId}
           resetAllCases={resetAllCases}
           searchkeyWord={searchkeyWord}
