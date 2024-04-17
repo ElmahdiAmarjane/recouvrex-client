@@ -2,6 +2,8 @@ import { FC, ChangeEvent, useState } from "react";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import PropTypes from "prop-types";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import {
   Tooltip,
   Divider,
@@ -29,8 +31,7 @@ import CasesSearch from "./CasesSearch";
 
 interface CasesTableProps {
   className?: string;
-  // cryptoOrders: Case[];
-  cryptoOrders: Case[];
+  cases: Case[];
   resetAllCases: () => void;
   updateSelectedStatusId: (id: number) => void;
   searchCasesByKeyWord: (keyword: string) => void;
@@ -100,7 +101,8 @@ const getStatusLabel = (caseStatus: CaseStatus): JSX.Element => {
 
   interface TextColor {
     text: string;
-    color:string
+    color:
+      | string
       | "primary"
       | "black"
       | "secondary"
@@ -128,16 +130,16 @@ const applyFilters = (cases: Case[], filters: Filters): Case[] => {
 };
 
 const applyPagination = (
-  cryptoOrders: Case[],
+  cases: Case[],
   page: number,
   limit: number
 ): Case[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
+  return cases.slice(page * limit, page * limit + limit);
 };
 
 // here it starts
 const CasesTable: FC<CasesTableProps> = ({
-  cryptoOrders,
+  cases,
   resetAllCases,
   updateSelectedStatusId,
   searchCasesByKeyWord,
@@ -162,7 +164,7 @@ const CasesTable: FC<CasesTableProps> = ({
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCases = applyFilters(cryptoOrders, filters);
+  const filteredCases = applyFilters(cases, filters);
   const paginatedCases = applyPagination(filteredCases, page, limit);
 
   return (
@@ -220,119 +222,132 @@ const CasesTable: FC<CasesTableProps> = ({
         </>
       )}
       <Divider />
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>IDENTIFIANT</TableCell>
-              <TableCell>DATE</TableCell>
-              <TableCell>STATUS</TableCell>
-              <TableCell>NOM</TableCell>
-              <TableCell>TYPE</TableCell>
-              <TableCell>CONTRAT</TableCell>
-              <TableCell>FACTURE</TableCell>
-              <TableCell>MONTANT</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {paginatedCases.map((caseItem) => {
-              const isCaseSelected = selectedCases.includes(caseItem.id);
-              return (
-                <TableRow hover key={caseItem.id} selected={isCaseSelected}>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      <Link
-                        href={`/case/${caseItem.caseId}`}
-                        rel="noopener noreferrer"
+      {!(cases.length > 0) ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            pt:2
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableContainer sx={{ minHeight: 150 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>IDENTIFIANT</TableCell>
+                <TableCell>DATE</TableCell>
+                <TableCell>STATUS</TableCell>
+                <TableCell>NOM</TableCell>
+                <TableCell>TYPE</TableCell>
+                <TableCell>CONTRAT</TableCell>
+                <TableCell>FACTURE</TableCell>
+                <TableCell>MONTANT</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {paginatedCases.map((caseItem) => {
+                const isCaseSelected = selectedCases.includes(caseItem.id);
+                return (
+                  <TableRow hover key={caseItem.id} selected={isCaseSelected}>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
                       >
-                        {caseItem.caseId}
-                      </Link>
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
+                        <Link
+                          href={`/case/${caseItem.caseId}`}
+                          rel="noopener noreferrer"
+                        >
+                          {caseItem.caseId}
+                        </Link>
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {caseItem.startDate}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      sx={{ maxWidth: "1200px", cursor: "pointer" }}
+                      onClick={() => {
+                        updateSelectedStatusId(caseItem.status.id);
+                      }}
                     >
-                      {caseItem.startDate}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    sx={{ maxWidth: "1200px", cursor: "pointer" }}
-                    onClick={() => {
-                      updateSelectedStatusId(caseItem.status.id);
-                    }}
-                  >
-                    {getStatusLabel(caseItem.status.status)}
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {caseItem.thirdParty.title}{" "}
-                      {caseItem.thirdParty.firstName}{" "}
-                      {caseItem.thirdParty.lastName}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {caseItem.thirdParty.tiersType}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    ></Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    ></Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {caseItem.totalAmount} DH
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                      {getStatusLabel(caseItem.status.status)}
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {caseItem.thirdParty.title}{" "}
+                        {caseItem.thirdParty.firstName}{" "}
+                        {caseItem.thirdParty.lastName}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {caseItem.thirdParty.tiersType}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      ></Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      ></Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {caseItem.totalAmount} DH
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <Box p={2}>
         <TablePagination
           component="div"
@@ -349,11 +364,11 @@ const CasesTable: FC<CasesTableProps> = ({
 };
 
 CasesTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired,
+  cases: PropTypes.array.isRequired,
 };
 
 CasesTable.defaultProps = {
-  cryptoOrders: [],
+  cases: [],
 };
 
 export default CasesTable;
