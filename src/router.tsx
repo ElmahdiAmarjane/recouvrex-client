@@ -24,18 +24,18 @@ const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
 
 // Applications
 
-const Messenger = Loader(
-  lazy(() => import('src/content/applications/Messenger'))
-);
-const Transactions = Loader(
-  lazy(() => import('src/content/applications/Transactions'))
-);
-const UserProfile = Loader(
-  lazy(() => import('src/content/applications/Users/profile'))
-);
-const UserSettings = Loader(
-  lazy(() => import('src/content/applications/Users/settings'))
-);
+// const Messenger = Loader(
+//   lazy(() => import('src/content/applications/Messenger'))
+// );
+// const Transactions = Loader(
+//   lazy(() => import('src/content/applications/Transactions'))
+// );
+// const UserProfile = Loader(
+//   lazy(() => import('src/content/applications/Users/profile'))
+// );
+// const UserSettings = Loader(
+//   lazy(() => import('src/content/applications/Users/settings'))
+// );
 
 //here we add for our Applicatoin Recouvrex
 //facturation
@@ -150,7 +150,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'messenger',
-        element: <Messenger />
+        // element: <Messenger />
       }
     ]
   },
@@ -205,7 +205,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'transactions',
-        element: <Transactions />
+        // element: <Transactions />
       },
       {
         path: 'profile',
@@ -214,14 +214,14 @@ const routes: RouteObject[] = [
             path: '',
             element: <Navigate to="details" replace />
           },
-          {
-            path: 'details',
-            element: <UserProfile />
-          },
-          {
-            path: 'settings',
-            element: <UserSettings />
-          }
+          // {
+          //   path: 'details',
+          //   element: <UserProfile />
+          // },
+          // {
+          //   path: 'settings',
+          //   element: <UserSettings />
+          // }
         ]
       }
     ]

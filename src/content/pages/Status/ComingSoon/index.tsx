@@ -89,12 +89,12 @@ function StatusComingSoon() {
       return;
     }
 
-    timerComponents.push(
-      <Box textAlign="center" px={3}>
-        <TypographyH1 variant="h1">{timeLeft[interval]}</TypographyH1>
-        <TypographyH3 variant="h3">{interval}</TypographyH3>
-      </Box>
-    );
+    // timerComponents.push(
+    //   <Box textAlign="center" px={3}>
+    //     <TypographyH1 variant="h1">{timeLeft[interval]}</TypographyH1>
+    //      <TypographyH3 variant="h3">{interval}</TypographyH3>
+    //   </Box>
+    // );
   });
 
   return (
