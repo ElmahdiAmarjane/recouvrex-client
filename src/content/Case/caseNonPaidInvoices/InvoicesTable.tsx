@@ -16,6 +16,8 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 
+import NewFacture from "./NewFacture";
+
 function createData(
   personne: string,
   contrat: string,
@@ -40,10 +42,12 @@ export default function InvoicesTable() {
             <TableCell align="left">DATE DE IMPAYÉ</TableCell>
             <TableCell align="left">DATE DE PAIEMENT</TableCell>
             <TableCell align="right">
-              <Button size="small" sx={{color:"green"}} startIcon={<AddIcon />} variant="text">
+              {/* <Button size="small" sx={{color:"green"}} startIcon={<AddIcon />} variant="text">
                 Ajouter
-              </Button>
+              </Button> */}
+               <NewFacture />
             </TableCell>
+           
           </TableRow>
         </TableHead>
         <TableBody>

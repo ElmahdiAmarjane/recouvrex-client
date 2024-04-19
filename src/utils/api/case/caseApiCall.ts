@@ -22,7 +22,7 @@ const userId:number=5;
   export async function getFilteredCasesByUser(): Promise<Case[]> {
     try {
       // Make the GET request
-      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filter/${userId}`);
+      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filterOne/?userConnectedId=${userId}`);
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -35,7 +35,7 @@ const userId:number=5;
   export async function getFilteredCasesByStatusId(statusId:number): Promise<Case[]> {
     try {
       // Make the GET request
-      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filter/?userConnectedId=${userId}&status=${statusId}`);
+      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filterOne/?userConnectedId=${userId}&statusId=${statusId}`);
      
       console.log('filterd cases by user connected id and status id : ', statusId);
       console.log(response.data);
