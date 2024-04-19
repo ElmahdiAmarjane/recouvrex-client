@@ -6,6 +6,8 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 
 const container = document.getElementById('root');
+if (!container) throw new Error('Failed to find the root element');
+
 const root = createRoot(container); // Create a root.
 
 root.render(
