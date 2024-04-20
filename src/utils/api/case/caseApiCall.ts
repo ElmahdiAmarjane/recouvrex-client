@@ -2,7 +2,7 @@ import axios from "axios";
 import {Case} from "src/models/case";
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-const userId:number=5;
+const userId:number=7;
 
  
   export async function getFilteredCases(caseId: string, status: string, procedure: string): Promise<Case[]> {
@@ -63,6 +63,20 @@ const userId:number=5;
       // Handle errors here if needed
       console.log(`filterd cases searching key word : "${keyword.trim()}"`);
 
+      throw new Error(`Failed to fetch data: ${error}`);
+    }
+  }
+
+
+  // filter cases by caseId
+  export async function getFilteredCasesByCaseId(userId:number,caseId:string): Promise<Case[]> {
+    try {
+      // Make the GET request
+      const response = await axios.get<Case[]>(`${apiUrl}/api/case/filter/?userConnectedId=${userId}&caseId=${caseId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      // Handle errors here if needed
       throw new Error(`Failed to fetch data: ${error}`);
     }
   }

@@ -20,14 +20,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Autocomplete from "@mui/material/Autocomplete";
 //
 import {getCurrentDate,getCurrentDateTime} from "../../../utils/CurrentDateTime"
+import { useState } from "react";
+import { createNewDueDate } from "src/utils/api/dueDate/DueDateApi";
+import { getFilteredCasesByCaseId } from "src/utils/api/case/caseApiCall";
+import {Case} from "../../../models/case";
+import { DueDate } from "src/models/DueDate";
 //
-import EventIcon from "@mui/icons-material/Event"; // example icon for Rendez-vous
-import CallIcon from "@mui/icons-material/Call"; // icon for Appel
-import EmailIcon from "@mui/icons-material/Email"; // icon for Email
-import AssignmentIcon from "@mui/icons-material/Assignment"; // example icon for Tache
-import VisibilityIcon from "@mui/icons-material/Visibility"; // example icon for Visite
-import ProcessIcon from '@mui/icons-material/AccountTree';
-import Case from "..";
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -36,10 +35,28 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
+interface NewFacture{
+    caseId:string;
+    id:string;
+}
 
-export default function NewFacture() {
+export default function NewFacture({caseId,id}:NewFacture) {
   const [open, setOpen] = React.useState(false);
 
+   // Créez des états pour chaque champ de saisie
+   const [clientFirstname, setClientFirstname] = useState('Elmahdi');
+   const [clientLastname, setClientLastname] = useState('Amarjane');
+   const [startDate, setCreationDate] = useState(getCurrentDateTime());
+   const [paymentDueDate, setDueDateDate] = useState('');
+   const [dueDateStatus, setDueDateStatus] = useState('');
+   const [principalAmount, setMontantCapital] = useState(0);
+   const [interestAmount, setMontantInteret] = useState(0);
+   const [insuranceAmount, setMontantAssurance] = useState(0);
+   const [ancillaryCharge, setMontantAccessoire] = useState(0);
+   const [latePaymentCharge, setPenaliteRetard] = useState(0);
+  // const [envoyerNotification, setEnvoyerNotification] = useState(false);
+ // const [cases, setCases] = useState([]);
+  const [caseInfo, setCaseInfo] = useState<Case[]>([]);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -47,29 +64,75 @@ export default function NewFacture() {
     setOpen(false);
   };
 
-  const [alignment, setAlignment] = React.useState("Tache");
+  const PaymentMethods = [
+    { label: "CASH" },
+    "LCN",
+    "CERTIFIED_CHECK",
+    "BANK_TRANSFER",
 
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment(newAlignment);
-  };
-
-  const projects = [
-    { label: "COLO00000057" },
-    "COLO00000058",
-    "COLO00000059",
-    "COLO00000060",
   ];
 
-  const Proprietaires = [
-    "y.elhaddaoui.ADMIN@arrawaj",
-    "a.hamidi.ADMIN@arrawaj",
-    "s.so3ada.user@arrawaj",
+  const paymentChannels = [
+    "Canal1",
+    "Canal2",
+    "Canal3",
+    "Canal4"
   ];
+ // let result=Case[1];
+  const getCaseInfo = async (caseId:string)=>{
+    const userId=7;
+    try {
+     let  result = await getFilteredCasesByCaseId(userId,caseId);
+       setCaseInfo(result)
+       console.log("caseinfo new facture: ",caseInfo)
+    } catch (error) {
+       console.log("erro fitching data new invoice:",error);
+    }
+ 
 
-  const profiles = ["profile 1", "profile 2", "profile 3"];
+  }
+  React.useEffect(()=>{
+          getCaseInfo(caseId);
+    
+       
+  },[])
+  React.useEffect(() => {
+    if (caseInfo.length > 0) {
+        setClientFirstname(caseInfo[0].thirdParty.firstName);
+        setClientLastname(caseInfo[0].thirdParty.lastName);
+    }
+}, [caseInfo]);
+
+
+
+  const handleSave = () => {
+    const formData: DueDate = {
+        id: 0, // Valeur par défaut pour l'identifiant
+        dueDateId: "", // Valeur par défaut pour l'identifiant de la date d'échéance
+        startDate: startDate,
+        paymentDueDate: paymentDueDate,
+        dueDateStatus: dueDateStatus,
+        principalAmount: principalAmount,
+        interestAmount: interestAmount,
+        insuranceAmount: insuranceAmount,
+        ancillaryCharge: ancillaryCharge,
+        latePaymentCharge: latePaymentCharge,
+        remainingPrincipalBalance: 0, // Valeur par défaut pour le solde principal restant
+        modificationDate: "", // Valeur par défaut pour la date de modification
+        totalInstallmentAmount: 0, // Valeur par défaut pour le montant total de l'échéance
+        unpaidPrincipalAmount: 0, // Valeur par défaut pour le montant du capital impayé
+        accruedInterest: 0, // Valeur par défaut pour le montant des intérêts impayés
+        unpaidInsurancePrenium: 0, // Valeur par défaut pour le montant de l'assurance impayée
+        unpaidAncillaryCharges: 0, // Valeur par défaut pour le montant des accessoires impayés
+        _case: {
+          id:parseInt(id)
+        },
+      };
+      
+    console.log(formData)
+    createNewDueDate(formData);
+    
+}
 
   return (
     <React.Fragment>
@@ -90,7 +153,7 @@ export default function NewFacture() {
      <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
       <Typography variant="h3">
         Créer Nouvelle Facture pour case
-        <span style={{ color: 'blue' }}> #COL0000001</span>
+        <span style={{ color: 'blue' }}> #{caseId}</span>
       </Typography>
     </DialogTitle>
         <IconButton
@@ -108,14 +171,16 @@ export default function NewFacture() {
         {/* -------------------------------------- */}
         
         <DialogContent dividers>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
           <Grid item xs={6}>
               <TextField
                 size="small"
                 id="clientFirstname"
                 label="Prénom Client"
-                defaultValue="Elmahdi"
+                defaultValue={clientFirstname}
                 fullWidth
+                onChange={(e) => setClientFirstname(clientFirstname)}
+
               />
             </Grid>
             <Grid item xs={6}>
@@ -123,40 +188,130 @@ export default function NewFacture() {
                 size="small"
                 id="clientLastname"
                 label="Nom Client"
-                defaultValue="AMARJANE"
+                defaultValue={clientLastname}
                 fullWidth
+                //il faut remplire ce champs avec autre maniere
+                onChange={(e) => setClientLastname(clientLastname)}
+
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 size="small"
                 id="creation-date"
                 label="Date du création"
-                type="date-local"
+                //type="date"
                 value={getCurrentDate()}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 fullWidth
+                onChange={(e) => setCreationDate(getCurrentDateTime())}
+
                 disabled
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 size="small"
-                id="end-date"
-                label="Fin"
-                type="datetime-local"
-                defaultValue="2017-05-24T10:30"
+                id="duedate-date"
+                label="Date d'écheance"
+                type="date"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 fullWidth
+                onChange={(e) => setDueDateDate(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                id="duedate-status"
+                label="Statut d'écheance"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                onChange={(e) => setDueDateStatus(e.target.value)}
+              />
+            </Grid>
+            {/* AMOUNT INPUTS  */}
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                id="montantCapital"
+                label="Montant Capital"
+                type="number"
+                fullWidth
+                InputLabelProps={{
+                    style: { fontWeight: 'bold', fontSize: '13px' }, // style for label
+                  }}
+                  InputProps={{
+                    style: { fontWeight: 'bold', fontSize: '14px' }, // style for input text
+                  }}
+                  onChange={(e) => setMontantCapital(parseFloat( e.target.value))}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                id="montantInteret"
+                label="Montant Interet"
+                type="number"
+                fullWidth
+                InputProps={{
+                    style: { fontWeight: 'bold', fontSize: '14px' }, // style for input text
+                  }}
+                  onChange={(e) => setMontantInteret(parseFloat( e.target.value))}
+
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                id="montantAssurance"
+                label="Montant Assurance"
+                type="number"
+                fullWidth
+                InputProps={{
+                    style: { fontWeight: 'bold', fontSize: '14px' }, // style for input text
+                  }}
+                  onChange={(e) => setMontantAssurance(parseFloat( e.target.value))}
+
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                id="montantAccessoire"
+                label="Montant Accessoire"
+                type="number"
+                fullWidth
+                InputProps={{
+                    style: { fontWeight: 'bold', fontSize: '14px' }, // style for input text
+                  }}
+                  onChange={(e) => setMontantAccessoire(parseFloat( e.target.value))}
+
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                size="small"
+                id="penaliteRetard"
+                label="Pénalité de retard"
+                type="number"
+                fullWidth
+                InputProps={{
+                    style: { fontWeight: 'bold', fontSize: '14px' }, // style for input text
+                  }}
+                  onChange={(e) => setPenaliteRetard(parseFloat( e.target.value))}
+
               />
             </Grid>
             {/* Repeat similar Grid items for other fields */}
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <TextField
                 size="small"
                 id="creation-date"
@@ -180,17 +335,19 @@ export default function NewFacture() {
                 }}
                 fullWidth
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid> */}
+            <Grid item xs={6}>
               <Autocomplete
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                options={projects}
+                options={PaymentMethods}
                 // sx={{ width: 300 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Projet" id="project" />
+                  <TextField {...params} label="Methode de paiement" id="paymentMethod" />
                 )}
+                
+
               />
             </Grid>
             <Grid item xs={6}>
@@ -198,18 +355,18 @@ export default function NewFacture() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                options={Proprietaires}
+                options={paymentChannels}
                 // sx={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Proprietaire"
-                    id="Proprietaire"
+                    label="canal de paiement"
+                    id="paymentChannel"
                   />
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            {/* <Grid item xs={12}>
               <Autocomplete
                 size="small"
                 disablePortal
@@ -220,9 +377,9 @@ export default function NewFacture() {
                   <TextField {...params} label="profile" id="profile" />
                 )}
               />
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 size="small"
                 id="Objet"
@@ -230,9 +387,9 @@ export default function NewFacture() {
                 defaultValue=""
                 fullWidth
               />
-            </Grid>
+            </Grid> */}
             {/* ...other fields... */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 size="small"
                 id="description"
@@ -241,7 +398,7 @@ export default function NewFacture() {
                 rows={4}
                 fullWidth
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <FormControlLabel
@@ -257,7 +414,7 @@ export default function NewFacture() {
 
         <DialogActions>
           
-          <Button autoFocus variant="contained" onClick={handleClose}>
+          <Button autoFocus variant="contained" onClick={()=>handleSave()}>
             Enregistrer
           </Button>
           <Button autoFocus onClick={handleClose}>

@@ -12,7 +12,8 @@ import CaseDossierContentieux from './caseDossierContentieux';
 
   
 function Case() {
-    const { caseId } = useParams();
+    const { caseId='' } = useParams();
+    const { id='' } = useParams();
 
 
   return (
@@ -45,7 +46,7 @@ function Case() {
           <CaseIntervenants/>
           </Grid>
           <Grid item xs={12}>
-          <CaseNonPaidInvoices/>
+          {<CaseNonPaidInvoices id={id} caseId={caseId}/>}
           </Grid>
         </Grid>
       </Container>

@@ -166,7 +166,7 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'case/:caseId',
+    path: 'case/:caseId/:id',
     element: <SidebarLayout />,
     children: [
       {

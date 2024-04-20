@@ -263,7 +263,7 @@ const CasesTable: FC<CasesTableProps> = ({
                         noWrap
                       >
                         <Link
-                          href={`/case/${caseItem.caseId}`}
+                          href={`/case/${caseItem.caseId}/${caseItem.id}`}
                           rel="noopener noreferrer"
                         >
                           {caseItem.caseId}
