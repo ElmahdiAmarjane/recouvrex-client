@@ -16,7 +16,11 @@ export class DueDate {
     accruedInterest: number;
     unpaidInsurancePrenium: number;
     unpaidAncillaryCharges: number;
-    _case: { id: number }; // Si _case est un objet avec une propriété id
+    _case: {
+       id: number 
+
+
+    }; // Si _case est un objet avec une propriété id
   
     constructor(data: any) {
       this.id = data.id;
@@ -59,5 +63,45 @@ export interface DueDateInterface {
   accruedInterest: number;
   unpaidInsurancePrenium: number;
   unpaidAncillaryCharges: number;
-  _case: { id: number };
+  _case: {
+    id: number;
+    caseId: string;
+    status: {
+      id: number;
+      status: string;
+    };
+    procedure: {
+      id: number;
+      procedureLabel: string;
+    };
+    thirdParty: {
+      id: number;
+      thirdPartyId: any; // Change 'any' to the correct type if possible
+      tiersType: string;
+      title: string;
+      lastName: string;
+      firstName: string;
+      companyName: string;
+      birthDate: string;
+      nationality: string;
+      countryOfResidence: string;
+      businessSector: string;
+      legalForm: string;
+      occupation: string;
+      personalEmail: string;
+      businessEmail: string;
+      privatePhone: string;
+      businessPhone: string;
+      landLinePhone: string;
+      faxNumber: string;
+      commercialRegister: string;
+      supportingDocumentType: string;
+      supportingDocumentNumber: string;
+      supportingDocumentExpirationDate: string;
+      maritalStatus: string;
+      // Add other properties if needed
+    };
+   
+    }
+    reglements: null
 }

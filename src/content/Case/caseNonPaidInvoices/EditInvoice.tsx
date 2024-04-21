@@ -17,11 +17,13 @@ import Checkbox from "@mui/material/Checkbox";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getCurrentDate, getCurrentDateTime } from "../../../utils/CurrentDateTime";
 import { useState, useEffect } from "react";
-import { createNewDueDate } from "src/utils/api/dueDate/DueDateApi";
+import { createNewDueDate, updateDueDate } from "src/utils/api/dueDate/DueDateApi";
 import { getFilteredCasesByCaseId } from "src/utils/api/case/caseApiCall";
 import { Case } from "../../../models/case";
-import { DueDate } from "src/models/DueDate";
+import { DueDate, DueDateInterface } from "src/models/DueDate";
 import Alert from "@mui/material/Alert";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import {  useTheme } from "@mui/material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -31,57 +33,39 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
-
-export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
+interface EditInvoiceProps {
+    caseId: string;
+    id: string;
+    dueDate:DueDateInterface;
+    setIsNewFactOpen:any
+  }
+export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoiceProps) {
+    const themeTable = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [clientFirstname, setClientFirstname] = useState('Elmahdi');
-  const [clientLastname, setClientLastname] = useState('Amarjane');
-  const [startDate, setCreationDate] = useState(getCurrentDateTime());
-  const [paymentDueDate, setDueDateDate] = useState('');
-  const [dueDateStatus, setDueDateStatus] = useState('');
-  const [principalAmount, setMontantCapital] = useState(0);
-  const [interestAmount, setMontantInteret] = useState(0);
-  const [insuranceAmount, setMontantAssurance] = useState(0);
-  const [ancillaryCharge, setMontantAccessoire] = useState(0);
-  const [latePaymentCharge, setPenaliteRetard] = useState(0);
+  const [clientFirstname, setClientFirstname] = useState(dueDate?._case.thirdParty.firstName);
+  const [clientLastname, setClientLastname] = useState(dueDate?._case.thirdParty.lastName);
+  const [startDate, setCreationDate] = useState(dueDate?.startDate);
+  const [paymentDueDate, setDueDateDate] = useState(dueDate?.paymentDueDate);
+  const [dueDateStatus, setDueDateStatus] = useState(dueDate?.dueDateStatus);
+  const [principalAmount, setMontantCapital] = useState(dueDate?.principalAmount);
+  const [interestAmount, setMontantInteret] = useState(dueDate?.interestAmount);
+  const [insuranceAmount, setMontantAssurance] = useState(dueDate?.insuranceAmount);
+  const [ancillaryCharge, setMontantAccessoire] = useState(dueDate?.ancillaryCharge);
+  const [latePaymentCharge, setPenaliteRetard] = useState(dueDate?.latePaymentCharge);
   const [paymentDueDateError, setPaymentDueDateError] = useState(false);
   const [principalAmountError, setPrincipalAmountError] = useState(false);
   const [interestAmountError, setInterestAmountError] = useState(false);
   const [insuranceAmountError, setInsuranceAmountError] = useState(false);
   const [ancillaryChargeError, setAncillaryChargeError] = useState(false);
   const [latePaymentChargeError, setLatePaymentChargeError] = useState(false);
-  const [caseInfo, setCaseInfo] = useState<Case[]>([]);
+ // const [caseInfo, setCaseInfo] = useState<Case[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    getCaseInfo(caseId);
-  }, [caseId]);
+ 
 
-  useEffect(() => {
-    if (caseInfo.length > 0) {
-      setClientFirstname(caseInfo[0].thirdParty.firstName);
-      setClientLastname(caseInfo[0].thirdParty.lastName);
-    }
-  }, [caseInfo]);
-
-  const getCaseInfo = async (caseId) => {
-    const userId = 7;
-    try {
-      const result = await getFilteredCasesByCaseId(userId, caseId);
-      setCaseInfo(result);
-    } catch (error) {
-      console.log("Error fetching case info:", error);
-    }
-  };
+  
   const resetFields = () => {
-    setDueDateDate('');
-    setDueDateStatus('');
-    setMontantCapital(0);
-    setMontantInteret(0);
-    setMontantAssurance(0);
-    setMontantAccessoire(0);
-    setPenaliteRetard(0);
     // Reset error states
     setPaymentDueDateError(false);
     setPrincipalAmountError(false);
@@ -91,7 +75,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
     setLatePaymentChargeError(false);
   };
   const formData: DueDate = {
-    id: 0,
+    id: dueDate.id,
     dueDateId: "",
     startDate: startDate,
     paymentDueDate: paymentDueDate,
@@ -120,8 +104,8 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
       return null;
      }
     try {
-      await createNewDueDate(formData);
-      setSuccessMessage("La nouvelle facture a été créée avec succès!");
+      await updateDueDate(formData);
+      setSuccessMessage("Modification succès!");
       setErrorMessage("");
       setTimeout(() => {
         setOpen(false);
@@ -133,7 +117,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
     } catch (error) {
       console.log("Error saving due date:", error);
       setSuccessMessage("");
-      setErrorMessage("Erreur lors de la création de la facture.");
+      setErrorMessage("Erreur lors de la modification de la facture.");
     }
   };
 
@@ -142,6 +126,8 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
     setOpen(false);
     setSuccessMessage("");
     setErrorMessage("");
+    setIsNewFactOpen(false);
+    console.log("id invoice ; " , dueDate.id);
 
   };
 
@@ -160,10 +146,19 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
 
   return (
     <React.Fragment>
-      <Tooltip arrow title="Créer Nouvelle Facture">
-        <Button size="small" sx={{ color: "green" }} startIcon={<AddIcon />} onClick={handleClickOpen} variant="text">
-          Ajouter
-        </Button>
+      <Tooltip arrow title="Editer la facture">
+         <IconButton
+                    sx={{
+                      "&:hover": { background: themeTable.colors.error.lighter },
+                      color: themeTable.palette.error.main,
+                    }}
+                    color="inherit"
+                    size="small"
+                    onClick={handleClickOpen}
+                  >
+                    <FileCopyIcon sx={{ color: "blue" }} fontSize="small" />
+                  </IconButton>
+                 
       </Tooltip>
       <BootstrapDialog
         onClose={handleClose}
@@ -173,8 +168,8 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           <Typography variant="h3">
-            Créer Nouvelle Facture pour case
-            <span style={{ color: 'blue' }}> #{caseId}</span>
+            Editer la facture 
+            <span style={{ color: 'blue' }}> #{dueDate?.dueDateId}</span>
           </Typography>
         </DialogTitle>
         <IconButton
@@ -198,7 +193,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 size="small"
                 id="clientFirstname"
                 label="Prénom Client"
-                value={clientFirstname}
+                value={dueDate?._case.thirdParty.firstName}
                 fullWidth
                 disabled
               />
@@ -208,7 +203,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 size="small"
                 id="clientLastname"
                 label="Nom Client"
-                value={clientLastname}
+                value={dueDate?._case.thirdParty.lastName}
                 fullWidth
                 disabled
               />
@@ -218,7 +213,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 size="small"
                 id="creation-date"
                 label="Date du création"
-                value={getCurrentDate()}
+                value={dueDate?.startDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -236,6 +231,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
       shrink: true,
     }}
     fullWidth
+   // defaultValue={dueDate?.paymentDueDate}
     value={paymentDueDate}
     onChange={(e) => {
       const selectedDate = e.target.value;
