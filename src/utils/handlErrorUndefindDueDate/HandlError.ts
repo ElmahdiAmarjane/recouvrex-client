@@ -1,21 +1,10 @@
-import { Helmet } from "react-helmet-async";
-import PageTitleWrapper from "src/components/PageTitleWrapper";
-import { Grid, Container, Card, Box, Typography } from "@mui/material";
-import Footer from "src/components/Footer";
-import InvoicesTable from "./InvoicesTable";
-import { DueDate, DueDateInterface } from "src/models/DueDate";
-import CasesSearch from "src/content/Cases/CasesSearch";
-import InvoiceSearch from "./InvoiceSearch";
 
-interface CaseNonPaidInvoicesProps {
-  caseId: string;
-  id: string;
-}
+// A ajouter dans un autre fichier separe et l'importer ici , c'est pour regler 
 
-function CaseNonPaidInvoices({ caseId, id }: CaseNonPaidInvoicesProps) {
-  // A ajouter dans un autre fichier separe et l'importer ici , c'est pour regler
+import { DueDateInterface } from "src/models/DueDate";
+
   // le problem undefined
-  const handlError: DueDateInterface = {
+  export const handlError:DueDateInterface ={
     id: 1,
     dueDateId: "",
     paymentDueDate: "",
@@ -38,11 +27,11 @@ function CaseNonPaidInvoices({ caseId, id }: CaseNonPaidInvoicesProps) {
       caseId: "",
       status: {
         id: 0,
-        status: "",
+        status: ""
       },
       procedure: {
         id: 0,
-        procedureLabel: "",
+        procedureLabel: ""
       },
       thirdParty: {
         id: 0,
@@ -68,24 +57,8 @@ function CaseNonPaidInvoices({ caseId, id }: CaseNonPaidInvoicesProps) {
         supportingDocumentType: "",
         supportingDocumentNumber: "",
         supportingDocumentExpirationDate: "",
-        maritalStatus: "",
-      },
+        maritalStatus: ""
+      }
     },
-    reglements: null,
-  };
-  return (
-    <Card>
-      <Typography variant="h3" sx={{ mt: 1, ml: 2 }}>
-        Factures  du contrat
-      </Typography>
-      <Box sx={{ marginTop: "20px" }}>
-        <InvoiceSearch />
-      </Box>
-      <Box>
-        <InvoicesTable dueDate={handlError} caseId={caseId} id={id} />
-      </Box>
-    </Card>
-  );
-}
-
-export default CaseNonPaidInvoices;
+    reglements:null
+  }

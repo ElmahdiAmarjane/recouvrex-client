@@ -6,6 +6,8 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import InvoiceDetails from './content/Case/caseNonPaidInvoices/InvoiceDetails/index';
+
 
 const Loader = (Component) => (props) =>
   (
@@ -192,6 +194,16 @@ const routes: RouteObject[] = [
       {
         path: '',
         element: <Tasks />
+      },
+    ]
+  },
+  {
+    path: 'invoice/:dueDateId',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <InvoiceDetails/>
       },
     ]
   },

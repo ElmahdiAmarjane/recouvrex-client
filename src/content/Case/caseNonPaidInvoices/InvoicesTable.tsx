@@ -1,3 +1,4 @@
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -5,18 +6,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { IconButton, Link, Tooltip, duration, useTheme } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
+import { IconButton, Link, Tooltip, useTheme } from "@mui/material";
 
-import NewFacture from "./NewFacture";
+import CloseIcon from "@mui/icons-material/Close";
+import NewFacture from "./NewInvoice";
 import { deleteDueDateById, getDueDatesByCaseId } from "src/utils/api/dueDate/DueDateApi";
 import { useEffect, useState } from "react";
 import { DueDate, DueDateInterface } from '../../../models/DueDate';
 import EditInvoice from "./EditInvoice";
 import Alert from "@mui/material/Alert";
 import AlertDialog from "./AlertDialog";
+import { encryptArg } from "src/utils/cryptageFunctions/Encrypt";
 interface InvoicesTableProps {
   caseId: string;
   id: string;
@@ -43,7 +43,7 @@ export default function InvoicesTable({ caseId, id }: InvoicesTableProps) {
 
   useEffect(() => {
     getDueDatesInfo(parseInt(id));
-
+    
   }, [isNewFactOpen]);
 
   const deleteDueDate = async (idDueDate: number) => {
@@ -67,6 +67,14 @@ export default function InvoicesTable({ caseId, id }: InvoicesTableProps) {
     }
   };
   
+
+
+  function storeDueDateId() {
+       localStorage.setItem("caseId",encryptArg(id))
+  }
+  useEffect(()=>{
+      storeDueDateId();
+  },[])
 
   return (
     <TableContainer component={Paper} style={{ position: 'relative' }}>
@@ -102,9 +110,10 @@ export default function InvoicesTable({ caseId, id }: InvoicesTableProps) {
             >
      
               <TableCell component="th" scope="row">
-                <Link href={`/case`} rel="noopener noreferrer">
+                <Link href={`/invoice/${dueDate.dueDateId}`} rel="noopener noreferrer">
                   {dueDate.dueDateId}
                 </Link>
+               
               
         <AlertDialog 
              isOpen={alertDialogOpen}
@@ -131,7 +140,7 @@ export default function InvoicesTable({ caseId, id }: InvoicesTableProps) {
                     <FileCopyIcon sx={{ color: "blue" }} fontSize="small" />
                   </IconButton>
                   */}
-              <EditInvoice dueDate={dueDate} caseId={caseId} id={id} setIsNewFactOpen={setIsNewFactOpen}/>
+              <EditInvoice check={false} dueDate={dueDate} caseId={caseId} id={id} setIsNewFactOpen={setIsNewFactOpen}/>
            
                 </Tooltip>
                 <Tooltip title="Delete Order" arrow>

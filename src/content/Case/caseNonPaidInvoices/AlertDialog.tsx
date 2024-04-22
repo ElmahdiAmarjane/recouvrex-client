@@ -4,8 +4,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Alert } from '@mui/material';
+import { Alert, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 export default function AlertDialog({setAlertDialogOpen,deleteDueDate,dueDateId,isOpen}) {
     
@@ -26,7 +27,20 @@ export default function AlertDialog({setAlertDialogOpen,deleteDueDate,dueDateId,
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-       
+           <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        
+      
        <Alert severity="warning">Attention</Alert>
 
         <DialogContent>

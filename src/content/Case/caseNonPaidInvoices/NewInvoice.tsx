@@ -15,7 +15,10 @@ import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getCurrentDate, getCurrentDateTime } from "../../../utils/CurrentDateTime";
+import {
+  getCurrentDate,
+  getCurrentDateTime,
+} from "../../../utils/formatDate/CurrentDateTime";
 import { useState, useEffect } from "react";
 import { createNewDueDate } from "src/utils/api/dueDate/DueDateApi";
 import { getFilteredCasesByCaseId } from "src/utils/api/case/caseApiCall";
@@ -34,11 +37,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
   const [open, setOpen] = React.useState(false);
-  const [clientFirstname, setClientFirstname] = useState('Elmahdi');
-  const [clientLastname, setClientLastname] = useState('Amarjane');
+  const [clientFirstname, setClientFirstname] = useState("Elmahdi");
+  const [clientLastname, setClientLastname] = useState("Amarjane");
   const [startDate, setCreationDate] = useState(getCurrentDateTime());
-  const [paymentDueDate, setDueDateDate] = useState('');
-  const [dueDateStatus, setDueDateStatus] = useState('');
+  const [paymentDueDate, setDueDateDate] = useState("");
+  const [dueDateStatus, setDueDateStatus] = useState("");
   const [principalAmount, setMontantCapital] = useState(0);
   const [interestAmount, setMontantInteret] = useState(0);
   const [insuranceAmount, setMontantAssurance] = useState(0);
@@ -75,8 +78,8 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
     }
   };
   const resetFields = () => {
-    setDueDateDate('');
-    setDueDateStatus('');
+    setDueDateDate("");
+    setDueDateStatus("");
     setMontantCapital(0);
     setMontantInteret(0);
     setMontantAssurance(0);
@@ -109,16 +112,15 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
     unpaidInsurancePrenium: 0,
     unpaidAncillaryCharges: 0,
     _case: {
-      id: parseInt(id)
+      id: parseInt(id),
     },
   };
   const handleSave = async () => {
-   
-     if(paymentDueDate==''){
-      setPaymentDueDateError(true)
+    if (paymentDueDate == "") {
+      setPaymentDueDateError(true);
       setErrorMessage("Erreur lors de la création de la facture.");
       return null;
-     }
+    }
     try {
       await createNewDueDate(formData);
       setSuccessMessage("La nouvelle facture a été créée avec succès!");
@@ -128,7 +130,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
         setSuccessMessage("");
         setErrorMessage("");
       }, 2000);
-      resetFields() // to reset fields values
+      resetFields(); // to reset fields values
       setIsNewFactOpen(false);
     } catch (error) {
       console.log("Error saving due date:", error);
@@ -138,11 +140,10 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
   };
 
   const handleClose = () => {
-    resetFields() ;
+    resetFields();
     setOpen(false);
     setSuccessMessage("");
     setErrorMessage("");
-
   };
 
   const handleClickOpen = () => {
@@ -161,7 +162,13 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
   return (
     <React.Fragment>
       <Tooltip arrow title="Créer Nouvelle Facture">
-        <Button size="small" sx={{ color: "green" }} startIcon={<AddIcon />} onClick={handleClickOpen} variant="text">
+        <Button
+          size="small"
+          sx={{ color: "green" }}
+          startIcon={<AddIcon />}
+          onClick={handleClickOpen}
+          variant="text"
+        >
           Ajouter
         </Button>
       </Tooltip>
@@ -174,7 +181,7 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           <Typography variant="h3">
             Créer Nouvelle Facture pour case
-            <span style={{ color: 'blue' }}> #{caseId}</span>
+            <span style={{ color: "blue" }}> #{caseId}</span>
           </Typography>
         </DialogTitle>
         <IconButton
@@ -191,7 +198,6 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
         </IconButton>
 
         <DialogContent dividers>
-        
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
@@ -227,26 +233,27 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
               />
             </Grid>
             <Grid item xs={4}>
-  <TextField
-    size="small"
-    id="duedate-date"
-    label="Date d'écheance"
-    type="date"
-    InputLabelProps={{
-      shrink: true,
-    }}
-    fullWidth
-    value={paymentDueDate}
-    onChange={(e) => {
-      const selectedDate = e.target.value;
-      setDueDateDate(selectedDate);
-      setPaymentDueDateError(!selectedDate); // Check if the selected date is empty
-    }}
-    error={paymentDueDateError}
-    helperText={paymentDueDateError ? "La date d'échéance est requise" : ""}
-  />
-</Grid>
-
+              <TextField
+                size="small"
+                id="duedate-date"
+                label="Date d'écheance"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                value={paymentDueDate}
+                onChange={(e) => {
+                  const selectedDate = e.target.value;
+                  setDueDateDate(selectedDate);
+                  setPaymentDueDateError(!selectedDate); // Check if the selected date is empty
+                }}
+                error={paymentDueDateError}
+                helperText={
+                  paymentDueDateError ? "La date d'échéance est requise" : ""
+                }
+              />
+            </Grid>
 
             <Grid item xs={4}>
               <TextField
@@ -270,18 +277,20 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 type="number"
                 fullWidth
                 InputLabelProps={{
-                  style: { fontWeight: 'bold', fontSize: '13px' },
+                  style: { fontWeight: "bold", fontSize: "13px" },
                 }}
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={principalAmount}
                 onChange={(e) => {
                   setMontantCapital(parseFloat(e.target.value));
-                  setPrincipalAmountError(e.target.value === '');
+                  setPrincipalAmountError(e.target.value === "");
                 }}
                 error={principalAmountError}
-                helperText={principalAmountError ? "Montant Capital est requis" : ""}
+                helperText={
+                  principalAmountError ? "Montant Capital est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -292,15 +301,17 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={interestAmount}
                 onChange={(e) => {
                   setMontantInteret(parseFloat(e.target.value));
-                  setInterestAmountError(e.target.value === '');
+                  setInterestAmountError(e.target.value === "");
                 }}
                 error={interestAmountError}
-                helperText={interestAmountError ? "Montant Intérêt est requis" : ""}
+                helperText={
+                  interestAmountError ? "Montant Intérêt est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -311,15 +322,17 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={insuranceAmount}
                 onChange={(e) => {
                   setMontantAssurance(parseFloat(e.target.value));
-                  setInsuranceAmountError(e.target.value === '');
+                  setInsuranceAmountError(e.target.value === "");
                 }}
                 error={insuranceAmountError}
-                helperText={insuranceAmountError ? "Montant Assurance est requis" : ""}
+                helperText={
+                  insuranceAmountError ? "Montant Assurance est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -330,15 +343,17 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={ancillaryCharge}
                 onChange={(e) => {
                   setMontantAccessoire(parseFloat(e.target.value));
-                  setAncillaryChargeError(e.target.value === '');
+                  setAncillaryChargeError(e.target.value === "");
                 }}
                 error={ancillaryChargeError}
-                helperText={ancillaryChargeError ? "Montant Accessoire est requis" : ""}
+                helperText={
+                  ancillaryChargeError ? "Montant Accessoire est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -349,15 +364,17 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={latePaymentCharge}
                 onChange={(e) => {
                   setPenaliteRetard(parseFloat(e.target.value));
-                  setLatePaymentChargeError(e.target.value === '');
+                  setLatePaymentChargeError(e.target.value === "");
                 }}
                 error={latePaymentChargeError}
-                helperText={latePaymentChargeError ? "Pénalité de retard est requise" : ""}
+                helperText={
+                  latePaymentChargeError ? "Pénalité de retard est requise" : ""
+                }
               />
             </Grid>
 
@@ -368,7 +385,11 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 id="combo-box-demo"
                 options={PaymentMethods}
                 renderInput={(params) => (
-                  <TextField {...params} label="Methode de paiement" id="paymentMethod" />
+                  <TextField
+                    {...params}
+                    label="Methode de paiement"
+                    id="paymentMethod"
+                  />
                 )}
               />
             </Grid>
@@ -379,7 +400,11 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
                 id="combo-box-demo"
                 options={paymentChannels}
                 renderInput={(params) => (
-                  <TextField {...params} label="canal de paiement" id="paymentChannel" />
+                  <TextField
+                    {...params}
+                    label="canal de paiement"
+                    id="paymentChannel"
+                  />
                 )}
               />
             </Grid>
@@ -392,18 +417,24 @@ export default function NewFacture({ caseId, id, setIsNewFactOpen }) {
             </Grid>
           </Grid>
           {successMessage && (
-  <Alert variant="filled" severity="success" sx={{ width: '500px', margin: 'auto' }}>
-    {successMessage}
-  </Alert>
-)}
-{errorMessage && (
-  <Alert variant="filled" severity="error" sx={{ width: '500px', margin: 'auto' }}>
-    {errorMessage}
-  </Alert>
-)}
-
+            <Alert
+              variant="filled"
+              severity="success"
+              sx={{ width: "500px", margin: "auto" }}
+            >
+              {successMessage}
+            </Alert>
+          )}
+          {errorMessage && (
+            <Alert
+              variant="filled"
+              severity="error"
+              sx={{ width: "500px", margin: "auto" }}
+            >
+              {errorMessage}
+            </Alert>
+          )}
         </DialogContent>
-
 
         <DialogActions>
           <Button autoFocus variant="contained" onClick={handleSave}>

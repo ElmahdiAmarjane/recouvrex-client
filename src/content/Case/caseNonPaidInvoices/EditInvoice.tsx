@@ -15,16 +15,23 @@ import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getCurrentDate, getCurrentDateTime } from "../../../utils/CurrentDateTime";
+import {
+  formatDate,
+  getCurrentDate,
+  getCurrentDateTime,
+} from "../../../utils/formatDate/CurrentDateTime";
 import { useState, useEffect } from "react";
-import { createNewDueDate, updateDueDate } from "src/utils/api/dueDate/DueDateApi";
+import {
+  createNewDueDate,
+  updateDueDate,
+} from "src/utils/api/dueDate/DueDateApi";
 import { getFilteredCasesByCaseId } from "src/utils/api/case/caseApiCall";
 import { Case } from "../../../models/case";
 import { DueDate, DueDateInterface } from "src/models/DueDate";
 import Alert from "@mui/material/Alert";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-import {  useTheme } from "@mui/material";
-
+import { useTheme } from "@mui/material";
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -34,37 +41,58 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 interface EditInvoiceProps {
-    caseId: string;
-    id: string;
-    dueDate:DueDateInterface;
-    setIsNewFactOpen:any
-  }
-export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoiceProps) {
-    const themeTable = useTheme();
+  caseId: string;
+  id: string;
+  dueDate: DueDateInterface;
+  setIsNewFactOpen: any;
+  check:boolean
+}
+export default function EditInvoice({
+  dueDate,
+  id,
+  setIsNewFactOpen,
+  check
+}: EditInvoiceProps) {
+  const themeTable = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [clientFirstname, setClientFirstname] = useState(dueDate?._case.thirdParty.firstName);
-  const [clientLastname, setClientLastname] = useState(dueDate?._case.thirdParty.lastName);
-  const [startDate, setCreationDate] = useState(dueDate?.startDate);
-  const [paymentDueDate, setDueDateDate] = useState(dueDate?.paymentDueDate);
-  const [dueDateStatus, setDueDateStatus] = useState(dueDate?.dueDateStatus);
-  const [principalAmount, setMontantCapital] = useState(dueDate?.principalAmount);
-  const [interestAmount, setMontantInteret] = useState(dueDate?.interestAmount);
-  const [insuranceAmount, setMontantAssurance] = useState(dueDate?.insuranceAmount);
-  const [ancillaryCharge, setMontantAccessoire] = useState(dueDate?.ancillaryCharge);
-  const [latePaymentCharge, setPenaliteRetard] = useState(dueDate?.latePaymentCharge);
+  // const [clientFirstname, setClientFirstname] = useState(  dueDate?._case.thirdParty.firstName);
+  // const [clientLastname, setClientLastname] = useState(dueDate?._case.thirdParty.lastName);
+  // const [startDate, setCreationDate] = useState(dueDate?.startDate);
+  // const [paymentDueDate, setDueDateDate] = useState(dueDate?.paymentDueDate);
+  // const [dueDateStatus, setDueDateStatus] = useState(dueDate?.dueDateStatus);
+  // const [principalAmount, setMontantCapital] = useState( dueDate?.principalAmount);
+  // const [interestAmount, setMontantInteret] = useState(dueDate?.interestAmount);
+  // const [insuranceAmount, setMontantAssurance] = useState(dueDate?.insuranceAmount);
+  // const [ancillaryCharge, setMontantAccessoire] = useState(dueDate?.ancillaryCharge);
+  // const [latePaymentCharge, setPenaliteRetard] = useState(dueDate?.latePaymentCharge);
+  const [clientFirstname, setClientFirstname] = useState("Elmahdi");
+  const [clientLastname, setClientLastname] = useState("Amarjane");
+  const [startDate, setCreationDate] = useState("");
+  const [paymentDueDate, setDueDateDate] = useState("");
+  const [dueDateStatus, setDueDateStatus] = useState("");
+  const [principalAmount, setMontantCapital] = useState(0);
+  const [interestAmount, setMontantInteret] = useState(0);
+  const [insuranceAmount, setMontantAssurance] = useState(0);
+  const [ancillaryCharge, setMontantAccessoire] = useState(0);
+  const [latePaymentCharge, setPenaliteRetard] = useState(0);
+  const [accruedInterest, setAccruedInterest] = useState(0);
+  const [totalInstallmentAmount, setTotalInstallmentAmount] = useState(0);
+  const [unpaidAncillaryCharges, setUnpaidAncillaryCharges] = useState(0);
+  const [unpaidInsurancePrenium, setUnpaidInsurancePrenium] = useState(0);
+  const [unpaidPrincipalAmount, setUnpaidPrincipalAmount] = useState(0);
+  const [modificationDate, setModificationDate] = useState(""); // Assuming modificationDate is a string
+  const [remainingPrincipalBalance, setRemainingPrincipalBalance] = useState(0);
+  //ERROR SET
   const [paymentDueDateError, setPaymentDueDateError] = useState(false);
   const [principalAmountError, setPrincipalAmountError] = useState(false);
   const [interestAmountError, setInterestAmountError] = useState(false);
   const [insuranceAmountError, setInsuranceAmountError] = useState(false);
   const [ancillaryChargeError, setAncillaryChargeError] = useState(false);
   const [latePaymentChargeError, setLatePaymentChargeError] = useState(false);
- // const [caseInfo, setCaseInfo] = useState<Case[]>([]);
+  // const [caseInfo, setCaseInfo] = useState<Case[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
- 
-
-  
+console.log("diudeuduedued",dueDate)
   const resetFields = () => {
     // Reset error states
     setPaymentDueDateError(false);
@@ -74,6 +102,36 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
     setAncillaryChargeError(false);
     setLatePaymentChargeError(false);
   };
+  
+  const initializeStateFromObject = (invoiceInfo: DueDateInterface) => {
+    setCreationDate(invoiceInfo.startDate);
+    setDueDateDate(invoiceInfo.paymentDueDate);
+    setDueDateStatus(invoiceInfo.dueDateStatus);
+    setMontantCapital(invoiceInfo.principalAmount);
+    setMontantInteret(invoiceInfo.interestAmount);
+    setMontantAssurance(invoiceInfo.insuranceAmount);
+    setMontantAccessoire(invoiceInfo.ancillaryCharge);
+    setPenaliteRetard(invoiceInfo.latePaymentCharge);
+    setAccruedInterest(invoiceInfo.accruedInterest);
+    setTotalInstallmentAmount(invoiceInfo.totalInstallmentAmount);
+    setUnpaidAncillaryCharges(invoiceInfo.unpaidAncillaryCharges);
+    setUnpaidInsurancePrenium(invoiceInfo.unpaidInsurancePrenium);
+    setUnpaidPrincipalAmount(invoiceInfo.unpaidPrincipalAmount);
+    //setId(invoiceInfo.id);
+    setModificationDate(invoiceInfo.modificationDate);
+    setRemainingPrincipalBalance(invoiceInfo.remainingPrincipalBalance);
+    setClientFirstname(invoiceInfo._case.thirdParty.firstName)
+    setClientLastname(invoiceInfo._case.thirdParty.lastName);
+  
+  }
+  useEffect(() => {
+    if (dueDate) {
+      initializeStateFromObject(dueDate);
+    }
+  }, [dueDate]);
+  
+
+
   const formData: DueDate = {
     id: dueDate.id,
     dueDateId: "",
@@ -93,16 +151,15 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
     unpaidInsurancePrenium: 0,
     unpaidAncillaryCharges: 0,
     _case: {
-      id: parseInt(id)
+      id: parseInt(id),
     },
   };
   const handleSave = async () => {
-   
-     if(paymentDueDate==''){
-      setPaymentDueDateError(true)
+    if (paymentDueDate == "") {
+      setPaymentDueDateError(true);
       setErrorMessage("Erreur lors de la création de la facture.");
       return null;
-     }
+    }
     try {
       await updateDueDate(formData);
       setSuccessMessage("Modification succès!");
@@ -112,23 +169,22 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
         setSuccessMessage("");
         setErrorMessage("");
       }, 2000);
-      resetFields() // to reset fields values
+      resetFields(); // to reset fields values
       setIsNewFactOpen(false);
     } catch (error) {
       console.log("Error saving due date:", error);
       setSuccessMessage("");
-      setErrorMessage("Erreur lors de la modification de la facture.");
+      setErrorMessage("Erreur lors de la modification de la facture DD.");
     }
   };
 
   const handleClose = () => {
-    resetFields() ;
+    resetFields();
     setOpen(false);
     setSuccessMessage("");
     setErrorMessage("");
     setIsNewFactOpen(false);
-    console.log("id invoice ; " , dueDate.id);
-
+    console.log("id invoice ; ", dueDate.id);
   };
 
   const handleClickOpen = () => {
@@ -146,20 +202,32 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
 
   return (
     <React.Fragment>
-      <Tooltip arrow title="Editer la facture">
-         <IconButton
-                    sx={{
-                      "&:hover": { background: themeTable.colors.error.lighter },
-                      color: themeTable.palette.error.main,
-                    }}
-                    color="inherit"
-                    size="small"
-                    onClick={handleClickOpen}
-                  >
-                    <FileCopyIcon sx={{ color: "blue" }} fontSize="small" />
-                  </IconButton>
-                 
+      {check ?  <Button
+                  size="small"
+                  rel="noopener noreferrer"
+                  sx={{mt:1}}
+                  variant="outlined"
+                  onClick={handleClickOpen}
+                  startIcon={<ChangeCircleIcon fontSize="small" />}
+                >
+                  Modifier la facture
+                
+                </Button> :  <Tooltip arrow title="Editer la facture">
+        <IconButton
+          sx={{
+            "&:hover": { background: themeTable.colors.error.lighter },
+            color: themeTable.palette.error.main,
+          }}
+          color="inherit"
+          size="small"
+          onClick={handleClickOpen}
+        >
+          <FileCopyIcon sx={{ color: "blue" }} fontSize="small" />
+        </IconButton>
       </Tooltip>
+
+      }
+    
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -168,8 +236,8 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           <Typography variant="h3">
-            Editer la facture 
-            <span style={{ color: 'blue' }}> #{dueDate?.dueDateId}</span>
+            Editer la facture
+            <span style={{ color: "blue" }}> #{dueDate?.dueDateId}</span>
           </Typography>
         </DialogTitle>
         <IconButton
@@ -186,14 +254,13 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
         </IconButton>
 
         <DialogContent dividers>
-        
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
                 size="small"
                 id="clientFirstname"
                 label="Prénom Client"
-                value={dueDate?._case.thirdParty.firstName}
+                value={clientFirstname}
                 fullWidth
                 disabled
               />
@@ -203,7 +270,7 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 size="small"
                 id="clientLastname"
                 label="Nom Client"
-                value={dueDate?._case.thirdParty.lastName}
+                value={clientLastname}
                 fullWidth
                 disabled
               />
@@ -213,7 +280,7 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 size="small"
                 id="creation-date"
                 label="Date du création"
-                value={dueDate?.startDate}
+                value={formatDate(startDate)}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -222,27 +289,28 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
               />
             </Grid>
             <Grid item xs={4}>
-  <TextField
-    size="small"
-    id="duedate-date"
-    label="Date d'écheance"
-    type="date"
-    InputLabelProps={{
-      shrink: true,
-    }}
-    fullWidth
-   // defaultValue={dueDate?.paymentDueDate}
-    value={paymentDueDate}
-    onChange={(e) => {
-      const selectedDate = e.target.value;
-      setDueDateDate(selectedDate);
-      setPaymentDueDateError(!selectedDate); // Check if the selected date is empty
-    }}
-    error={paymentDueDateError}
-    helperText={paymentDueDateError ? "La date d'échéance est requise" : ""}
-  />
-</Grid>
-
+              <TextField
+                size="small"
+                id="duedate-date"
+                label="Date d'écheance"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                // defaultValue={dueDate?.paymentDueDate}
+                value={paymentDueDate}
+                onChange={(e) => {
+                  const selectedDate = e.target.value;
+                  setDueDateDate(selectedDate);
+                  setPaymentDueDateError(!selectedDate); // Check if the selected date is empty
+                }}
+                error={paymentDueDateError}
+                helperText={
+                  paymentDueDateError ? "La date d'échéance est requise" : ""
+                }
+              />
+            </Grid>
 
             <Grid item xs={4}>
               <TextField
@@ -266,18 +334,20 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 type="number"
                 fullWidth
                 InputLabelProps={{
-                  style: { fontWeight: 'bold', fontSize: '13px' },
+                  style: { fontWeight: "bold", fontSize: "13px" },
                 }}
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={principalAmount}
                 onChange={(e) => {
                   setMontantCapital(parseFloat(e.target.value));
-                  setPrincipalAmountError(e.target.value === '');
+                  setPrincipalAmountError(e.target.value === "");
                 }}
                 error={principalAmountError}
-                helperText={principalAmountError ? "Montant Capital est requis" : ""}
+                helperText={
+                  principalAmountError ? "Montant Capital est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -288,15 +358,17 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={interestAmount}
                 onChange={(e) => {
                   setMontantInteret(parseFloat(e.target.value));
-                  setInterestAmountError(e.target.value === '');
+                  setInterestAmountError(e.target.value === "");
                 }}
                 error={interestAmountError}
-                helperText={interestAmountError ? "Montant Intérêt est requis" : ""}
+                helperText={
+                  interestAmountError ? "Montant Intérêt est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -307,15 +379,17 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={insuranceAmount}
                 onChange={(e) => {
                   setMontantAssurance(parseFloat(e.target.value));
-                  setInsuranceAmountError(e.target.value === '');
+                  setInsuranceAmountError(e.target.value === "");
                 }}
                 error={insuranceAmountError}
-                helperText={insuranceAmountError ? "Montant Assurance est requis" : ""}
+                helperText={
+                  insuranceAmountError ? "Montant Assurance est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -326,15 +400,17 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={ancillaryCharge}
                 onChange={(e) => {
                   setMontantAccessoire(parseFloat(e.target.value));
-                  setAncillaryChargeError(e.target.value === '');
+                  setAncillaryChargeError(e.target.value === "");
                 }}
                 error={ancillaryChargeError}
-                helperText={ancillaryChargeError ? "Montant Accessoire est requis" : ""}
+                helperText={
+                  ancillaryChargeError ? "Montant Accessoire est requis" : ""
+                }
               />
             </Grid>
             <Grid item xs={4}>
@@ -345,15 +421,17 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 type="number"
                 fullWidth
                 InputProps={{
-                  style: { fontWeight: 'bold', fontSize: '14px' },
+                  style: { fontWeight: "bold", fontSize: "14px" },
                 }}
                 value={latePaymentCharge}
                 onChange={(e) => {
                   setPenaliteRetard(parseFloat(e.target.value));
-                  setLatePaymentChargeError(e.target.value === '');
+                  setLatePaymentChargeError(e.target.value === "");
                 }}
                 error={latePaymentChargeError}
-                helperText={latePaymentChargeError ? "Pénalité de retard est requise" : ""}
+                helperText={
+                  latePaymentChargeError ? "Pénalité de retard est requise" : ""
+                }
               />
             </Grid>
 
@@ -364,7 +442,11 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 id="combo-box-demo"
                 options={PaymentMethods}
                 renderInput={(params) => (
-                  <TextField {...params} label="Methode de paiement" id="paymentMethod" />
+                  <TextField
+                    {...params}
+                    label="Methode de paiement"
+                    id="paymentMethod"
+                  />
                 )}
               />
             </Grid>
@@ -375,7 +457,11 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
                 id="combo-box-demo"
                 options={paymentChannels}
                 renderInput={(params) => (
-                  <TextField {...params} label="canal de paiement" id="paymentChannel" />
+                  <TextField
+                    {...params}
+                    label="canal de paiement"
+                    id="paymentChannel"
+                  />
                 )}
               />
             </Grid>
@@ -388,18 +474,24 @@ export default function EditInvoice({ dueDate, id , setIsNewFactOpen }:EditInvoi
             </Grid>
           </Grid>
           {successMessage && (
-  <Alert variant="filled" severity="success" sx={{ width: '500px', margin: 'auto' }}>
-    {successMessage}
-  </Alert>
-)}
-{errorMessage && (
-  <Alert variant="filled" severity="error" sx={{ width: '500px', margin: 'auto' }}>
-    {errorMessage}
-  </Alert>
-)}
-
+            <Alert
+              variant="filled"
+              severity="success"
+              sx={{ width: "500px", margin: "auto" }}
+            >
+              {successMessage}
+            </Alert>
+          )}
+          {errorMessage && (
+            <Alert
+              variant="filled"
+              severity="error"
+              sx={{ width: "500px", margin: "auto" }}
+            >
+              {errorMessage}
+            </Alert>
+          )}
         </DialogContent>
-
 
         <DialogActions>
           <Button autoFocus variant="contained" onClick={handleSave}>

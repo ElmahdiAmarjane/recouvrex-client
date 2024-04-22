@@ -48,3 +48,17 @@ export async function updateDueDate(dueDate: DueDate) {
         throw new Error(`Failed to fetch data: ${error}`);
     }
 }
+
+
+export async function getDueDatesByCaseIdAndDueDateId(caseId: number,dueDateId:string) {
+    console.log("dueDate from createNewDueDate: ", caseId);
+    try {
+        // Make the POST request
+        const response = await axios.get(`${apiUrl}/api/dueDate/getDueDateInfo?caseId=${caseId}&dueDateId=${dueDateId}`);
+        console.log("DueDate : ",response.data);
+        return response.data;
+    } catch (error) {
+        // Handle errors here if needed
+        throw new Error(`Failed to fetch dueDatesByCaseIdAndDueDateId: ${error}`);
+    }
+}
